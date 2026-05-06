@@ -12,7 +12,7 @@ export async function getTeyaAccessToken(): Promise<string> {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${basicAuth}`,
     },
-    body: new URLSearchParams({ grant_type: 'client_credentials' }),
+    body: new URLSearchParams({ grant_type: 'client_credentials', scope: 'paybylink' }),
   });
 
   if (!res.ok) {

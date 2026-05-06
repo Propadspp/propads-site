@@ -2,17 +2,15 @@ const TOKEN_URL = 'https://id.teya.xyz/oauth/v2/oauth-token';
 const API_URL = 'https://api.teya.xyz';
 
 export async function getTeyaAccessToken(): Promise<string> {
-  const basicAuth = Buffer.from(
-    `${process.env.TEYA_CLIENT_ID}:${process.env.TEYA_CLIENT_SECRET}`
-  ).toString('base64');
-
   const res = await fetch(TOKEN_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${basicAuth}`,
-    },
-    body: new URLSearchParams({ grant_type: 'client_credentials', scope: 'paybylink' }),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: process.env.TEYA_CLIENT_ID!,
+      client_secret: process.env.TEYA_CLIENT_SECRET!,
+      scope: 'payment-links/create payment-links/id/get payment-links/id/update',
+    }),
   });
 
   if (!res.ok) {

@@ -1,10 +1,20 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useCart } from '@/lib/cart';
 
 export default function Nav({ onCartOpen }: { onCartOpen: () => void }) {
   const { totalQty } = useCart();
+  const pathname = usePathname();
+  const navLink = (href: string, label: string) => {
+    const active = pathname === href || (href !== '/' && pathname.startsWith(href));
+    return (
+      <Link href={href} className="nav-link" style={{ fontWeight: active ? 700 : 400, color: active ? '#fff' : undefined }}>
+        {label}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -27,12 +37,12 @@ export default function Nav({ onCartOpen }: { onCartOpen: () => void }) {
         </div>
       </nav>
       <div className="nav-center" style={{ position: 'fixed', top: 0, left: '50%', transform: 'translateX(-50%)', height: 64, display: 'flex', alignItems: 'center', gap: 32, zIndex: 51 }}>
-        <Link href="/#vorur" className="nav-link">Vörur</Link>
-        <Link href="/legghlifar" className="nav-link">Legghlífar</Link>
-        <Link href="/gripsokkar" className="nav-link">Gripsokkar</Link>
-        <Link href="/tilbod" className="nav-link">Tilboð</Link>
-        <Link href="/um-okkur" className="nav-link">Um okkur</Link>
-        <Link href="/#hafa-samband" className="nav-link">Hafðu samband</Link>
+        {navLink('/#vorur', 'Vörur')}
+        {navLink('/legghlifar', 'Legghlífar')}
+        {navLink('/gripsokkar', 'Gripsokkar')}
+        {navLink('/tilbod', 'Tilboð')}
+        {navLink('/um-okkur', 'Um okkur')}
+        {navLink('/#hafa-samband', 'Hafðu samband')}
       </div>
     </>
   );

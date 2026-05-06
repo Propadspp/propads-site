@@ -48,11 +48,14 @@ export async function createPaymentLink(cart: CartItem[]): Promise<string> {
     body: JSON.stringify({
       store_id: process.env.TEYA_STORE_ID,
       amount: { currency: 'ISK', value: total },
-      line_items: cart.map((item) => ({
-        description: `${item.name} – Stærð ${item.size}`,
-        quantity: item.qty,
-        unit_price: item.price,
-      })),
+      line_items: [
+        ...cart.map((item) => ({
+          description: `${item.name} – Stærð ${item.size}`,
+          quantity: item.qty,
+          unit_price: item.price,
+        })),
+        ...(shipping > 0 ? [{ description: 'Sending', quantity: 1, unit_price: shipping }] : []),
+      ],
       success_url: `${process.env.NEXT_PUBLIC_URL}/greidslutekist`,
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/klara-kaup`,
       post_success_payment: 'REDIRECT',

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
 import { client } from '@/lib/sanity';
 
+export const dynamic = 'force-dynamic';
+
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 async function getPrices() {

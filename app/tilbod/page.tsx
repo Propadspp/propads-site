@@ -45,9 +45,9 @@ function BundleCard({ bundle, accent }: { bundle: Bundle | undefined; accent: bo
   if (!bundle) return null;
 
   const items = [
-    [`${bundle.legghlif}× Legghlíf${bundle.legghlif > 1 ? 'ar' : ''}`, bundle.legghlif > 1 ? 'Blandaðar stærðir mögulegar' : 'S, M eða L'],
-    [`${bundle.gripsokkar}× Gripsokkar`, bundle.legghlif > 1 ? '2 pör á hvern leikmann' : '2 pör, veldu stærð'],
-  ];
+    bundle.legghlif > 0 && [`${bundle.legghlif}× Legghlíf${bundle.legghlif > 1 ? 'ar' : ''}`, bundle.legghlif > 1 ? 'Blandaðar stærðir mögulegar' : 'S, M eða L'],
+    bundle.gripsokkar > 0 && [`${bundle.gripsokkar}× Gripsokkar`, bundle.legghlif > 1 ? '2 pör á hvern leikmann' : '2 pör, veldu stærð'],
+  ].filter(Boolean) as [string, string][];
 
   return (
     <div style={{ background: accent ? '#0f1308' : '#101010', border: `1px solid ${accent ? 'rgba(184,240,58,0.3)' : 'rgba(255,255,255,0.07)'}`, borderRadius: 24, overflow: 'hidden' }}>

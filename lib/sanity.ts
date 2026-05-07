@@ -44,6 +44,28 @@ export async function getProducts(): Promise<Product[]> {
   );
 }
 
+export type Bundle = {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  description?: string;
+  price: number;
+  originalPrice?: number;
+  legghlif: number;
+  gripsokkar: number;
+  badge?: string;
+  active: boolean;
+  order?: number;
+};
+
+export async function getBundles(): Promise<Bundle[]> {
+  return client.fetch(
+    `*[_type=="bundle" && active==true && !(_id in path("drafts.**"))] | order(order asc) {
+      _id, name, slug, description, price, originalPrice, legghlif, gripsokkar, badge, active, order
+    }`
+  );
+}
+
 export async function getPlayers(): Promise<Player[]> {
   return client.fetch(
     `*[_type=="player" && !(_id in path("drafts.**"))] | order(order asc) {

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
-import { getBundles, type Bundle } from '@/lib/sanity';
+import { getBundles, getProducts, urlFor, type Bundle, type Product } from '@/lib/sanity';
 import TeamBundleCard from './TeamBundleCard';
 
 export const dynamic = 'force-dynamic';
@@ -8,7 +8,17 @@ export const dynamic = 'force-dynamic';
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 export default async function TilbodPage() {
-  const bundles = await getBundles();
+  const [bundles, allProducts] = await Promise.all([getBundles(), getProducts()]);
+  const legghlifar = allProducts
+    .filter(p => p.category === 'legghlifar')
+    .map(p => ({
+      _id: p._id,
+      name: p.name,
+      imgUrl: p.images?.[0]?.asset
+        ? urlFor(p.images[0].asset).width(120).height(120).fit('crop').auto('format').url()
+        : null,
+    }))
+    .filter((p, i, arr) => arr.findIndex(x => x._id === p._id) === i);
 
   return (
     <PageLayout>
@@ -23,7 +33,7 @@ export default async function TilbodPage() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 20 }}>
           {bundles.map(b =>
             b.legghlif > 1
-              ? <TeamBundleCard key={b._id} bundle={b} />
+              ? <TeamBundleCard key={b._id} bundle={b} legghlifar={legghlifar} />
               : <StaticBundleCard key={b._id} bundle={b} />
           )}
         </div>

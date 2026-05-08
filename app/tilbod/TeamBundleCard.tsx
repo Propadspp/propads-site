@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useCart } from '@/lib/cart';
 import { type Bundle } from '@/lib/sanity';
 
@@ -9,15 +10,17 @@ function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 const LEGGHLIF_SIZES = ['S', 'M', 'L'];
 
 type SizeQty = Record<string, number>;
+type LegghlifItem = { _id: string; name: string; imgUrl: string | null };
 
-export default function TeamBundleCard({ bundle }: { bundle: Bundle }) {
+export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle; legghlifar: LegghlifItem[] }) {
   const { addItem } = useCart();
   const [sizeQty, setSizeQty] = useState<SizeQty>({ S: 0, M: 0, L: 0 });
+  const [selectedProduct, setSelectedProduct] = useState<LegghlifItem | null>(legghlifar[0] ?? null);
   const [toast, setToast] = useState('');
 
   const total = Object.values(sizeQty).reduce((a: number, b: number) => a + b, 0);
   const needed = bundle.legghlif;
-  const valid = total === needed;
+  const valid = total === needed && selectedProduct !== null;
 
   function adjust(size: string, delta: number) {
     setSizeQty(prev => {
@@ -29,14 +32,14 @@ export default function TeamBundleCard({ bundle }: { bundle: Bundle }) {
   }
 
   function addToCart() {
-    if (!valid) return;
+    if (!valid || !selectedProduct) return;
     const sizeDesc = Object.entries(sizeQty)
       .filter(([, q]) => q > 0)
       .map(([s, q]) => `${q}× ${s}`)
       .join(', ');
     addItem({
-      id: bundle._id,
-      name: bundle.name,
+      id: `${bundle._id}-${selectedProduct._id}`,
+      name: `${bundle.name} — ${selectedProduct.name}`,
       price: bundle.price,
       category: 'Legghlífar',
       size: sizeDesc,
@@ -83,11 +86,50 @@ export default function TeamBundleCard({ bundle }: { bundle: Bundle }) {
             ))}
           </div>
 
+          {/* Líkan/litur val */}
+          {legghlifar.length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>Veldu líkan</p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                {legghlifar.map(p => {
+                  const active = selectedProduct?._id === p._id;
+                  return (
+                    <button
+                      key={p._id}
+                      onClick={() => setSelectedProduct(p)}
+                      style={{
+                        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                        background: 'transparent', border: 'none', cursor: 'pointer', padding: 0,
+                      }}
+                    >
+                      <div style={{
+                        width: 72, height: 72, borderRadius: 12, overflow: 'hidden', position: 'relative',
+                        border: `2px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.1)'}`,
+                        boxShadow: active ? '0 0 0 2px rgba(184,240,58,0.3)' : 'none',
+                        transition: 'border-color 0.15s, box-shadow 0.15s',
+                        background: '#161616',
+                      }}>
+                        {p.imgUrl ? (
+                          <Image src={p.imgUrl} alt={p.name} fill style={{ objectFit: 'cover' }} />
+                        ) : (
+                          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'rgba(255,255,255,0.1)' }} />
+                          </div>
+                        )}
+                      </div>
+                      <span style={{ fontSize: '0.7rem', color: active ? 'var(--brand)' : 'rgba(255,255,255,0.45)', fontWeight: active ? 600 : 400, maxWidth: 72, textAlign: 'center', lineHeight: 1.3 }}>{p.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Stærðarval */}
           <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '16px 20px', marginBottom: 24 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
               <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>Veldu stærðir</p>
-              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: valid ? 'var(--brand)' : 'rgba(255,255,255,0.3)' }}>
+              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: total === needed ? 'var(--brand)' : 'rgba(255,255,255,0.3)' }}>
                 {total} / {needed}
               </span>
             </div>
@@ -95,7 +137,7 @@ export default function TeamBundleCard({ bundle }: { bundle: Bundle }) {
               {LEGGHLIF_SIZES.map(s => (
                 <div key={s} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '0.9375rem', fontWeight: 500, color: '#fff', minWidth: 28 }}>{s}</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
                     <button
                       onClick={() => adjust(s, -1)}
                       style={{ width: 34, height: 34, borderRadius: '7px 0 0 7px', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: (sizeQty[s] ?? 0) === 0 ? 'rgba(255,255,255,0.2)' : '#fff', fontSize: '1.1rem', cursor: 'pointer' }}
@@ -123,7 +165,7 @@ export default function TeamBundleCard({ bundle }: { bundle: Bundle }) {
             disabled={!valid}
             style={{ padding: '12px 24px', fontSize: '0.9rem', borderRadius: 11, border: 'none', cursor: valid ? 'pointer' : 'default', background: valid ? 'var(--brand)' : 'rgba(255,255,255,0.08)', color: valid ? '#080808' : 'rgba(255,255,255,0.25)', fontWeight: 700, transition: 'background 0.15s, color 0.15s' }}
           >
-            {valid ? 'Í körfu' : `${needed - total} í viðbót`}
+            {!selectedProduct ? 'Veldu líkan' : !valid ? `${needed - total} í viðbót` : 'Í körfu'}
           </button>
         </div>
       </div>

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
 
@@ -9,7 +8,13 @@ function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 export default function KlaraKaupPage() {
   const { cart, subtotal } = useCart();
-  const shipping = subtotal >= 8000 ? 0 : 990;
+
+  const [area, setArea] = useState<'capital' | 'rural'>('capital');
+  const [freeShipping, setFreeShipping] = useState(false);
+  useEffect(() => {
+    fetch('/api/site-settings').then(r => r.json()).then(d => setFreeShipping(d.freeShipping ?? false));
+  }, []);
+  const shipping = freeShipping ? 0 : area === 'capital' ? 700 : 1500;
 
   const [sameRecipient, setSameRecipient] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -128,6 +133,19 @@ export default function KlaraKaupPage() {
             <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32, marginBottom: 16 }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 24 }}>Sendingarupplýsingar</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                {/* Area selector */}
+                <div>
+                  <p style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 10 }}>Svæði</p>
+                  <div style={{ display: 'flex', gap: 10 }}>
+                    {([['capital', 'Höfuðborgarsvæðið', freeShipping ? 'Ókeypis' : '700 kr'], ['rural', 'Landsbygðin', freeShipping ? 'Ókeypis' : '1.500 kr']] as const).map(([val, label, price]) => (
+                      <button key={val} type="button" onClick={() => setArea(val)}
+                        style={{ flex: 1, padding: '12px 16px', borderRadius: 12, border: `1.5px solid ${area === val ? 'var(--brand)' : 'rgba(255,255,255,0.1)'}`, background: area === val ? 'rgba(184,240,58,0.06)' : 'transparent', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s, background 0.15s' }}>
+                        <p style={{ fontSize: '0.875rem', fontWeight: 600, color: area === val ? '#fff' : 'rgba(255,255,255,0.6)', marginBottom: 2 }}>{label}</p>
+                        <p style={{ fontSize: '0.75rem', color: freeShipping ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>{price}</p>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Heimilisfang</label><input name="heimilisfang" type="text" required placeholder="Laugavegur 1" className="form-input" /></div>
                 <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14 }}>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label><input name="postnumer" type="text" required placeholder="101" className="form-input" /></div>

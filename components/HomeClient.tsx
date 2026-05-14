@@ -27,7 +27,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           Búðu þig undir<br /><span style={{ color: 'var(--brand)' }}>hvern leik.</span>
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.0625rem', lineHeight: 1.75, maxWidth: 460, marginBottom: 44 }}>
-          Fótboltavörur. Hannaðar fyrir þá sem gefa 100%.
+          Fótboltavörur — hannaðar fyrir þá sem gefa 100% í leikinn.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', justifyContent: 'center' }}>
           <a href="#vorur" className="btn-primary" style={{ padding: '14px 32px' }}>Skoðaðu vörurnar</a>
@@ -102,10 +102,10 @@ export default function HomeClient({ products, players }: { products: Product[];
           <h2 className="font-display" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.2rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, color: '#fff' }}>Algengar spurningar</h2>
         </div>
         {[
-          { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+). Skoðaðu stærðarleiðbeiningar til að fá frekari upplýsingar.' },
-          { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Við sendum alla pöntun samdægurs ef hún berst fyrir kl. 14:00 á virkum degi. Sendingar fara á höfuðborgasvæðið. Hafðu samband við okkur á propadspp@gmail.com ef þú ert utan höfuðborgarsvæðisins.' },
-          { q: 'Get ég skilað vöru?', a: 'Ónotaðar vörur í upprunalegu ástandi skila sér gegn inneign í búðinni. Sjá skilareglu okkar fyrir fulla skilmála.' },
-          { q: 'Hvernig hef ég samband?', a: 'Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland. Við svörum á 1–2 virkum dögum.' },
+          { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).' },
+          { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Við sendum allar pantanir samdægurs ef þær berast fyrir kl. 14:00 á virkum degi. Sending á höfuðborgarsvæðinu kostar 700 kr og er frí ef pantað er fyrir meira en 8.000 kr. Sendum með Póstinum utan höfuðborgarsvæðisins fyrir 1.500 kr — frítt ef verslað er fyrir meira en 8.000 kr.' },
+          { q: 'Get ég skilað vöru?', a: 'Já, skilafrestur er 30 dagar. Sjá nánar í skilareglu okkar.' },
+          { q: 'Hvernig hef ég samband?', a: 'Við höfum samband eins fljótt og auðið er. Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland.' },
         ].map((item, i) => (
           <details key={i} className="faq-item">
             <summary style={{ listStyle: 'none', cursor: 'pointer', padding: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, fontSize: '1rem', fontWeight: 500, color: '#fff', userSelect: 'none' }}>
@@ -120,8 +120,8 @@ export default function HomeClient({ products, players }: { products: Product[];
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.055)', borderBottom: '1px solid rgba(255,255,255,0.055)', background: '#0c0c0c' }}>
         <div className="trust-grid" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
           {[
-            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>, title: 'Ókeypis sending', sub: 'Á pantanir yfir 8.000 kr á höfuðborgasvæðinu' },
-            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>, title: '30 daga skilafrestur', sub: 'Ef þér líkar ekki — skilaðu' },
+            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>, title: 'Frí sending', sub: 'Ef verslað er fyrir 8.000 kr eða meira' },
+            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>, title: '30 daga skilafrestur', sub: 'Ónotaðar vörur í upprunalegum umbúðum' },
             { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>, title: 'Pósturinn um allt land', sub: '1-3 virka daga á höfuðborgarsvæðinu' },
           ].map((t, i) => (
             <div key={i} style={{ padding: '36px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.055)' : undefined }}>

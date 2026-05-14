@@ -104,8 +104,8 @@ export default function HomeClient({ products, players }: { products: Product[];
         {[
           { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).' },
           { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Við sendum allar pantanir samdægurs ef þær berast fyrir kl. 14:00 á virkum degi. Sending á höfuðborgarsvæðinu kostar 700 kr og er frí ef pantað er fyrir meira en 8.000 kr. Sendum með Póstinum utan höfuðborgarsvæðisins fyrir 1.500 kr — frítt ef verslað er fyrir meira en 8.000 kr.' },
-          { q: 'Get ég skilað vöru?', a: 'Já, skilafrestur er 30 dagar. Sjá nánar í skilareglu okkar.' },
-          { q: 'Hvernig hef ég samband?', a: 'Við höfum samband eins fljótt og auðið er. Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland.' },
+          { q: 'Get ég skilað vöru?', a: <>Já, skilafrestur er 30 dagar. <Link href="/skilaregla" style={{ color: 'var(--brand)', textDecoration: 'none' }}>Smelltu hér til að lesa nánar um skilavörur.</Link></> },
+          { q: 'Hvernig hef ég samband?', a: 'Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland. Við svörum eins fljótt og auðið er.' },
         ].map((item, i) => (
           <details key={i} className="faq-item">
             <summary style={{ listStyle: 'none', cursor: 'pointer', padding: '20px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, fontSize: '1rem', fontWeight: 500, color: '#fff', userSelect: 'none' }}>

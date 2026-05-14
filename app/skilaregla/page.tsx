@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
 
 const Pill = ({ color, label }: { color: 'green' | 'red' | 'grey'; label: string }) => {
@@ -27,7 +26,7 @@ const rules = [
     color: 'green' as const,
     pill: 'Inneign í búðinni',
     title: 'Röng stærð',
-    desc: <>Pantaðir rangar stærðir? Við gefum þér <strong style={{ color: '#fff' }}>inneign sem gildir í 1 ár</strong>. Sendu vöruna til baka í upprunalegu ástandi.</>,
+    desc: <>Pantaðir þú ranga stærð? Þú færð <strong style={{ color: '#fff' }}>inneign sem gildir í 1 ár</strong>. Sendu vöruna til baka í upprunalegu ástandi og umbúðunum.</>,
     icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
     iconColor: 'var(--brand)',
   },
@@ -59,7 +58,7 @@ const rules = [
     color: 'grey' as const,
     pill: '3 skref',
     title: 'Skilaferillinn',
-    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og gefum þér skilaupplýsingar.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
+    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og sendum þér skilaupplýsingar — <strong style={{ color: '#fff' }}>þú greiðir flutningskostnað</strong>.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
     icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
     iconColor: 'var(--brand)',
   },
@@ -70,7 +69,7 @@ export default function SkilareglaPage() {
     <PageLayout>
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 56px' }}>
         <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Skilmálar</p>
-        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
+        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 560 }}>Við viljum að þú sért ánægð/ur með kaupin. Lestu reglurnar hér að neðan — við reynum að gera þetta eins einfalt og mögulegt er.</p>
       </section>
 

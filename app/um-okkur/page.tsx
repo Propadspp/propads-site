@@ -15,7 +15,7 @@ export default function UmOkkurPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Um okkur</p>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', lineHeight: 1.85 }}>Við þróum búnað fyrir leikmenn sem vilja einfaldar og áreiðanlegar lausnir. Áherslan er á þægindi og hönnun sem fellur vel að leiknum og truflar ekki.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', lineHeight: 1.85 }}>Við þróum vörur fyrir leikmenn sem vilja einfaldar og þægilegar lausnir. Við hönnum vörur sem falla vel að trufla ekki leikinn.</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32 }}>

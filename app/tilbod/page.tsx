@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
-import { getBundles, getProducts, urlFor, type Bundle, type Product } from '@/lib/sanity';
+import { getBundles, getProducts, urlFor, type Bundle } from '@/lib/sanity';
 import TeamBundleCard from './TeamBundleCard';
 
 export const dynamic = 'force-dynamic';
@@ -25,8 +25,8 @@ export default async function TilbodPage() {
       <section style={{ maxWidth: 900, margin: '0 auto', padding: '140px 24px 64px' }}>
         <Link href="/" className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 32, fontSize: '0.8125rem' }}>← Til baka</Link>
         <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Tilboð</p>
-        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Kauptu fleiri — sparaðu meira</h1>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 520 }}>Veldu pakka sem hentar þér — hvort sem þú ert einn leikmaður eða að kaupa fyrir liðið.</p>
+        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Fáðu meira — sparaðu meira</h1>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 520 }}>Veldu pakka sem hentar — þarf að græja allt liðið?</p>
       </section>
 
       <section style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px 80px' }}>
@@ -48,7 +48,7 @@ export default async function TilbodPage() {
 
 function StaticBundleCard({ bundle }: { bundle: Bundle }) {
   const items = [
-    bundle.legghlif > 0 && [`${bundle.legghlif}× Legghlíf${bundle.legghlif > 1 ? 'ar' : ''}`, 'S, M eða L'],
+    bundle.legghlif > 0 && [bundle.legghlif > 1 ? `${bundle.legghlif}× Legghlífar` : 'Legghlíf', 'S, M eða L'],
     bundle.gripsokkar > 0 && [`${bundle.gripsokkar}× Gripsokkar`, '2 pör, veldu stærð'],
   ].filter(Boolean) as [string, string][];
 

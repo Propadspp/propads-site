@@ -153,7 +153,7 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
   const needsSokkar = bundle.gripsokkar > 0;
 
   const items = [
-    bundle.legghlif > 0 && [`${bundle.legghlif}× Legghlíf${bundle.legghlif > 1 ? 'ar' : ''}`, `${bundle.legghlif} leikmenn`],
+    bundle.legghlif > 0 && [`${bundle.legghlif}× Legghlífar`, `${bundle.legghlif} leikmenn`],
     bundle.gripsokkar > 0 && [`${bundle.gripsokkar}× Gripsokkar`, `${Math.round(bundle.gripsokkar / bundle.legghlif)} pör á hvern`],
   ].filter(Boolean) as [string, string][];
 
@@ -164,9 +164,11 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
       <div style={{ background: '#0f1308', border: '1px solid rgba(184,240,58,0.3)', borderRadius: 24, overflow: 'hidden' }}>
         <div style={{ padding: '32px 32px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-            <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Lið pakkinn</p>
-            {bundle.badge && (
-              <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.65rem', fontWeight: 700, padding: '3px 9px', borderRadius: 6, letterSpacing: '0.06em' }}>{bundle.badge}</span>
+            <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>Liðspakkinn</p>
+            {bundle.originalPrice && bundle.originalPrice > bundle.price && (
+              <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.65rem', fontWeight: 700, padding: '3px 9px', borderRadius: 6, letterSpacing: '0.06em' }}>
+                {Math.round((1 - bundle.price / bundle.originalPrice) * 100)}% AFSLÁTTUR
+              </span>
             )}
           </div>
           <h2 className="font-display" style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff', marginBottom: 6 }}>{bundle.name}</h2>

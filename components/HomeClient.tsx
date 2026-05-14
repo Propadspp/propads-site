@@ -23,7 +23,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <span style={{ background: 'var(--brand)', color: '#080808', fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 5, letterSpacing: '0.06em', textTransform: 'uppercase' }}>NÝTT</span>
           <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8125rem' }}>Gripsokkar komnir á lagerinn →</span>
         </Link>
-        <h1 className="font-display" style={{ fontSize: 'clamp(5.5rem,16vw,16rem)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.04em', color: '#fff', maxWidth: 1200, marginBottom: 36 }}>
+        <h1 className="font-display" style={{ fontSize: 'clamp(4.5rem,12vw,12rem)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.04em', color: '#fff', maxWidth: 1200, marginBottom: 36, textShadow: '0 0 60px rgba(184,240,58,0.45), 0 0 120px rgba(184,240,58,0.2), 0 0 200px rgba(184,240,58,0.1)' }}>
           Propads
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.0625rem', lineHeight: 1.75, maxWidth: 460, marginBottom: 44 }}>

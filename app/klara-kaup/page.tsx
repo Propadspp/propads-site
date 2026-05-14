@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
 
@@ -10,11 +10,8 @@ export default function KlaraKaupPage() {
   const { cart, subtotal } = useCart();
 
   const [area, setArea] = useState<'capital' | 'rural'>('capital');
-  const [freeShipping, setFreeShipping] = useState(false);
-  useEffect(() => {
-    fetch('/api/site-settings').then(r => r.json()).then(d => setFreeShipping(d.freeShipping ?? false));
-  }, []);
-  const shipping = freeShipping ? 0 : area === 'capital' ? 700 : 1500;
+  const [codeGivesFreeShipping, setCodeGivesFreeShipping] = useState(false);
+  const shipping = codeGivesFreeShipping ? 0 : area === 'capital' ? 700 : 1500;
 
   const [sameRecipient, setSameRecipient] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -52,7 +49,9 @@ export default function KlaraKaupPage() {
         } else {
           setDiscountAmount(data.discount);
           setAppliedCode(data.code);
-          setDiscountMsg(`✓ ${data.type === 'percent' ? data.value + '%' : fmtPrice(data.value)} afsláttur`);
+          setCodeGivesFreeShipping(data.freeShipping ?? false);
+          const label = data.freeShipping ? 'Ókeypis sending' : `${data.type === 'percent' ? data.value + '%' : fmtPrice(data.value)} afsláttur`;
+          setDiscountMsg(`✓ ${label}`);
         }
       } else {
         setDiscountAmount(0);
@@ -137,11 +136,11 @@ export default function KlaraKaupPage() {
                 <div>
                   <p style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 10 }}>Svæði</p>
                   <div style={{ display: 'flex', gap: 10 }}>
-                    {([['capital', 'Höfuðborgarsvæðið', freeShipping ? 'Ókeypis' : '700 kr'], ['rural', 'Landsbygðin', freeShipping ? 'Ókeypis' : '1.500 kr']] as const).map(([val, label, price]) => (
+                    {([['capital', 'Höfuðborgarsvæðið', codeGivesFreeShipping ? 'Ókeypis' : '700 kr'], ['rural', 'Landsbygðin', codeGivesFreeShipping ? 'Ókeypis' : '1.500 kr']] as const).map(([val, label, price]) => (
                       <button key={val} type="button" onClick={() => setArea(val)}
                         style={{ flex: 1, padding: '12px 16px', borderRadius: 12, border: `1.5px solid ${area === val ? 'var(--brand)' : 'rgba(255,255,255,0.1)'}`, background: area === val ? 'rgba(184,240,58,0.06)' : 'transparent', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s, background 0.15s' }}>
                         <p style={{ fontSize: '0.875rem', fontWeight: 600, color: area === val ? '#fff' : 'rgba(255,255,255,0.6)', marginBottom: 2 }}>{label}</p>
-                        <p style={{ fontSize: '0.75rem', color: freeShipping ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>{price}</p>
+                        <p style={{ fontSize: '0.75rem', color: codeGivesFreeShipping ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>{price}</p>
                       </button>
                     ))}
                   </div>
@@ -161,7 +160,7 @@ export default function KlaraKaupPage() {
                 <input
                   type="text"
                   value={discountCode}
-                  onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountAmount(0); setAppliedCode(''); setDiscountMsg(''); }}
+                  onChange={e => { setDiscountCode(e.target.value.toUpperCase()); setDiscountAmount(0); setAppliedCode(''); setDiscountMsg(''); setCodeGivesFreeShipping(false); }}
                   onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), applyDiscount())}
                   placeholder="KÓÐINN ÞINN"
                   className="form-input"
@@ -169,7 +168,7 @@ export default function KlaraKaupPage() {
                   disabled={!!appliedCode}
                 />
                 {appliedCode ? (
-                  <button type="button" onClick={() => { setAppliedCode(''); setDiscountCode(''); setDiscountAmount(0); setDiscountMsg(''); }}
+                  <button type="button" onClick={() => { setAppliedCode(''); setDiscountCode(''); setDiscountAmount(0); setDiscountMsg(''); setCodeGivesFreeShipping(false); }}
                     style={{ padding: '0 16px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(255,255,255,0.4)', fontSize: '0.8125rem', cursor: 'pointer', whiteSpace: 'nowrap' }}>
                     Taka af
                   </button>

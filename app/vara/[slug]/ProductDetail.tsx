@@ -72,11 +72,8 @@ export default function ProductDetail({ product }: { product: Product }) {
           )}
 
           <div style={{ marginBottom: 28 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-              <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>Veldu stærð</p>
-              <Link href="/staerd-leidbeiningar" className="nav-link" style={{ fontSize: '0.75rem' }}>Stærðarleiðbeiningar →</Link>
-            </div>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <p style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 12 }}>Veldu stærð</p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
               {product.sizes.map(s => (
                 <button
                   key={s.size}
@@ -89,6 +86,16 @@ export default function ProductDetail({ product }: { product: Product }) {
                 </button>
               ))}
             </div>
+            {product.category === 'legghlifar' && (
+              <details style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 10 }}>
+                <summary style={{ listStyle: 'none', cursor: 'pointer', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)', userSelect: 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  Hvernig vel ég rétta stærð? <span>▾</span>
+                </summary>
+                <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginTop: 8 }}>
+                  Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).
+                </p>
+              </details>
+            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
@@ -100,10 +107,24 @@ export default function ProductDetail({ product }: { product: Product }) {
             onClick={handleAdd}
             disabled={!inStock || selectedStock === 0}
             className="btn-primary"
-            style={{ width: '100%', padding: '16px 0', fontSize: '1rem', borderRadius: 14, opacity: (!inStock || selectedStock === 0) ? 0.4 : 1 }}
+            style={{ width: '100%', padding: '16px 0', fontSize: '1rem', borderRadius: 14, opacity: (!inStock || selectedStock === 0) ? 0.4 : 1, marginBottom: 24 }}
           >
             {!inStock || selectedStock === 0 ? 'Uppselt' : 'Bæta í körfu'}
           </button>
+
+          {/* Traits */}
+          <div style={{ display: 'flex', gap: 10 }}>
+            {product.category === 'legghlifar' && (
+              <div style={{ flex: 1, background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--brand)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff' }}>Létt</span>
+              </div>
+            )}
+            <div style={{ flex: 1, background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 14, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--brand)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#fff' }}>Þægilegt</span>
+            </div>
+          </div>
 
         </div>
       </div>

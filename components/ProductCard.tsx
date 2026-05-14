@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 import { urlFor, type Product } from '@/lib/sanity';
 
@@ -34,15 +35,19 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <>
       <article className="product-card">
-        <div style={{ position: 'relative', height: 280, overflow: 'hidden', background: '#161616' }}>
-          <Image src={imgSrc} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s ease' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.65) 0%,transparent 55%)', pointerEvents: 'none' }} />
-          {product.featured && <span style={{ position: 'absolute', top: 12, right: 12, zIndex: 3, fontSize: '0.6875rem', fontWeight: 700, padding: '3px 10px', borderRadius: 7, letterSpacing: '0.05em', background: 'var(--brand)', color: '#080808' }}>NÝTT</span>}
-        </div>
-        <div style={{ padding: '1.25rem' }}>
-          <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.6875rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 5 }}>{categoryLabel}</p>
-          <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 6, lineHeight: 1.3 }}>{product.name}</h3>
-          {product.description && <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: 12 }}>{product.description}</p>}
+        <Link href={`/vara/${product.slug.current}`} style={{ textDecoration: 'none', display: 'block' }}>
+          <div style={{ position: 'relative', height: 280, overflow: 'hidden', background: '#161616' }}>
+            <Image src={imgSrc} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s ease' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.65) 0%,transparent 55%)', pointerEvents: 'none' }} />
+            {product.featured && <span style={{ position: 'absolute', top: 12, right: 12, zIndex: 3, fontSize: '0.6875rem', fontWeight: 700, padding: '3px 10px', borderRadius: 7, letterSpacing: '0.05em', background: 'var(--brand)', color: '#080808' }}>NÝTT</span>}
+          </div>
+          <div style={{ padding: '1.25rem 1.25rem 0' }}>
+            <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.6875rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 5 }}>{categoryLabel}</p>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 6, lineHeight: 1.3 }}>{product.name}</h3>
+            {product.description && <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: 12 }}>{product.description}</p>}
+          </div>
+        </Link>
+        <div style={{ padding: '0 1.25rem 1.25rem' }}>
           <div style={{ display: 'flex', gap: 6, marginBottom: 14, flexWrap: 'wrap' }}>
             {product.sizes.map(s => (
               <button key={s.size} className={`size-btn${selectedSize === s.size ? ' active' : ''}`} onClick={() => setSelectedSize(s.size)} disabled={s.stock === 0}>

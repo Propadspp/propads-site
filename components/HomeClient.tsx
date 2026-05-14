@@ -184,7 +184,7 @@ export default function HomeClient({ products, players }: { products: Product[];
             <div>
               <h5 style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 18 }}>Fyrirtækið</h5>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {[['Um okkur','/um-okkur'],['Hafðu samband','#hafa-samband'],['Skilaregla','/skilaregla']].map(([l,h]) => <li key={h}><Link href={h} className="nav-link">{l}</Link></li>)}
+                {[['Um okkur','/um-okkur'],['Hafðu samband','/#hafa-samband'],['Skilaregla','/skilaregla']].map(([l,h]) => <li key={h}><Link href={h} className="nav-link">{l}</Link></li>)}
               </ul>
             </div>
             <div>

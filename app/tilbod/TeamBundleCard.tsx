@@ -98,7 +98,7 @@ function Modal({ bundle, legghlifar, onClose }: { bundle: Bundle; legghlifar: Le
       const prod = legghlifar.find(l => l._id === p.legghlifProductId);
       return `${i + 1}: ${p.legghlifSize}${prod ? ` · ${prod.name}` : ''}${needsSokkar ? ` · sokkar ${p.sokkarSize}` : ''}`;
     }).join(' | ');
-    addItem({ id: bundle._id, name: bundle.name, price: bundle.price, category: 'Legghlífar', size: desc });
+    addItem({ id: bundle._id, name: bundle.name, price: bundle.price, category: 'bundle', size: desc });
     setToast('Bætt í körfu ✓');
     setTimeout(() => { setToast(''); onClose(); }, 1500);
   }

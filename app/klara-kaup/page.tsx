@@ -26,6 +26,8 @@ export default function KlaraKaupPage() {
 
   const total = Math.max(0, subtotal + shipping - discountAmount);
 
+  const hasBundle = cart.some(item => item.category === 'bundle');
+
   async function applyDiscount() {
     if (!discountCode.trim()) return;
     setDiscountLoading(true);
@@ -38,9 +40,15 @@ export default function KlaraKaupPage() {
       });
       const data = await res.json();
       if (data.valid) {
-        setDiscountAmount(data.discount);
-        setAppliedCode(data.code);
-        setDiscountMsg(`✓ ${data.type === 'percent' ? data.value + '%' : fmtPrice(data.value)} afsláttur`);
+        if (hasBundle && !data.allowOnBundles) {
+          setDiscountAmount(0);
+          setAppliedCode('');
+          setDiscountMsg('Þessi kóði virkar ekki á tilboðsvörum');
+        } else {
+          setDiscountAmount(data.discount);
+          setAppliedCode(data.code);
+          setDiscountMsg(`✓ ${data.type === 'percent' ? data.value + '%' : fmtPrice(data.value)} afsláttur`);
+        }
       } else {
         setDiscountAmount(0);
         setAppliedCode('');

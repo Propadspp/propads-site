@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
       type: doc.type,
       value: doc.value,
       discount,
+      allowOnBundles: doc.allowOnBundles ?? false,
     });
   } catch (err) {
     console.error('validate-code villa:', err);

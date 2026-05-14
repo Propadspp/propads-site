@@ -69,7 +69,7 @@ export default function SkilareglaPage() {
     <PageLayout>
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 56px' }}>
         <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Skilmálar</p>
-        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '0.08em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
+        <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '-0.015em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 560 }}>Við viljum að þú sért ánægð/ur með kaupin. Lestu reglurnar hér að neðan — við reynum að gera þetta eins einfalt og mögulegt er.</p>
       </section>
 

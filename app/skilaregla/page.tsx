@@ -58,7 +58,7 @@ const rules = [
     color: 'grey' as const,
     pill: '3 skref',
     title: 'Skilaferillinn',
-    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og sendum þér skilaupplýsingar — <strong style={{ color: '#fff' }}>þú greiðir flutningskostnað</strong>.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
+    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og sendum þér skilaupplýsingar — þú greiðir flutningskostnað.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
     icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
     iconColor: 'var(--brand)',
   },

@@ -18,6 +18,7 @@ type CartCtx = {
   updateQty: (id: string, size: string, qty: number) => void;
   totalQty: number;
   subtotal: number;
+  toast: string;
 };
 
 const Ctx = createContext<CartCtx | null>(null);
@@ -66,11 +67,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const [toast, setToast] = useState('');
+
+  const addItemWithToast = useCallback((item: Omit<CartItem, 'qty'>) => {
+    addItem(item);
+    setToast(item.name);
+    setTimeout(() => setToast(''), 2000);
+  }, [addItem]);
+
   const totalQty = cart.reduce((s, i) => s + i.qty, 0);
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
   return (
-    <Ctx.Provider value={{ cart, addItem, removeItem, updateQty, totalQty, subtotal }}>
+    <Ctx.Provider value={{ cart, addItem: addItemWithToast, removeItem, updateQty, totalQty, subtotal, toast }}>
       {children}
     </Ctx.Provider>
   );

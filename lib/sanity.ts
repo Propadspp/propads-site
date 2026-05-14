@@ -66,6 +66,19 @@ export async function getBundles(): Promise<Bundle[]> {
   );
 }
 
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const results = await client.fetch<Product[]>(
+    `*[_type=="product" && slug.current==$slug && !(_id in path("drafts.**"))][0..0] {
+      _id, name, slug, category, price, description,
+      images[]{ asset, alt },
+      sizes[]{ size, stock },
+      featured
+    }`,
+    { slug }
+  );
+  return results?.[0] ?? null;
+}
+
 export async function getPlayers(): Promise<Player[]> {
   return client.fetch(
     `*[_type=="player" && !(_id in path("drafts.**"))] | order(order asc) {

@@ -24,7 +24,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8125rem' }}>Gripsokkar komnir á lagerinn →</span>
         </Link>
         <h1 className="font-display" style={{ fontSize: 'clamp(3.8rem,9.5vw,8.5rem)', fontWeight: 900, lineHeight: 1.04, letterSpacing: '-0.025em', color: '#fff', maxWidth: 940, marginBottom: 28 }}>
-          Búðu þig undir<br /><span style={{ color: 'var(--brand)' }}>hvern leik.</span>
+          Propads
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.0625rem', lineHeight: 1.75, maxWidth: 460, marginBottom: 44 }}>
           Fótboltavörur — hannaðar fyrir þá sem gefa 100% í leikinn.

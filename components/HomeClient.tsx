@@ -122,7 +122,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           {[
             { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>, title: 'Ókeypis sending', sub: 'Á pantanir yfir 8.000 kr á höfuðborgasvæðinu' },
             { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>, title: '30 daga skilafrestur', sub: 'Ef þér líkar ekki — skilaðu' },
-            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>, title: 'Hraðsending', sub: '1–3 dagar innan höfuðborgasvæðisins' },
+            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>, title: 'Pósturinn um allt land', sub: '1-3 virka daga á höfuðborgarsvæðinu' },
           ].map((t, i) => (
             <div key={i} style={{ padding: '36px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.055)' : undefined }}>
               <div style={{ color: 'var(--brand)' }}><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.8">{t.icon}</svg></div>
@@ -151,7 +151,6 @@ export default function HomeClient({ products, players }: { products: Product[];
               {[
                 { label: 'Tölvupóstur', value: 'propadspp@gmail.com', href: 'mailto:propadspp@gmail.com' },
                 { label: 'Instagram', value: '@propadsiceland', href: '#' },
-                { label: 'Staðsetning', value: 'Reykjavík, Ísland', href: undefined },
               ].map(c => (
                 <div key={c.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(184,240,58,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -174,7 +173,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 40, marginBottom: 48 }}>
             <div>
               <span className="font-display" style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff', display: 'block', marginBottom: 16 }}>PROPADS</span>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem', lineHeight: 1.8, maxWidth: 260 }}>Íslenskar fótboltavörur. Hannaðar fyrir þá sem gefa 100%.</p>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem', lineHeight: 1.8, maxWidth: 260 }}>Fótboltavörur — hannaðar fyrir þá sem gefa 100% í leikinn.</p>
             </div>
             <div>
               <h5 style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 18 }}>Vörur</h5>

@@ -17,8 +17,8 @@ export default function HomeClient({ products, players }: { products: Product[];
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       {/* HERO */}
-      <section style={{ background: 'radial-gradient(ellipse 85% 55% at 50% 100%, rgba(184,240,58,0.11) 0%, transparent 65%), radial-gradient(ellipse 45% 35% at 18% 65%, rgba(184,240,58,0.05) 0%, transparent 55%), #080808', minHeight: '100svh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', bottom: -60, left: '50%', width: 800, height: 420, background: 'radial-gradient(ellipse,rgba(184,240,58,0.11) 0%,transparent 70%)', pointerEvents: 'none', animation: 'floatY 7s ease-in-out infinite' }} />
+      <section style={{ background: 'radial-gradient(ellipse 85% 55% at 50% 100%, rgba(255,77,171,0.11) 0%, transparent 65%), radial-gradient(ellipse 45% 35% at 18% 65%, rgba(255,77,171,0.05) 0%, transparent 55%), #080808', minHeight: '100svh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', bottom: -60, left: '50%', width: 800, height: 420, background: 'radial-gradient(ellipse,rgba(255,77,171,0.11) 0%,transparent 70%)', pointerEvents: 'none', animation: 'floatY 7s ease-in-out infinite' }} />
         <Link href="/gripsokkar" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(12px)', textDecoration: 'none', marginBottom: 36 }}>
           <span style={{ background: 'var(--brand)', color: '#080808', fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 5, letterSpacing: '0.06em', textTransform: 'uppercase' }}>NÝTT</span>
           <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8125rem' }}>Gripsokkar komnir á lagerinn →</span>
@@ -153,7 +153,7 @@ export default function HomeClient({ products, players }: { products: Product[];
                 { label: 'Instagram', value: '@propadsiceland', href: '#' },
               ].map(c => (
                 <div key={c.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(184,240,58,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,77,171,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--brand)' }} />
                   </div>
                   <div>

@@ -146,9 +146,11 @@ export default function KlaraKaupPage() {
                   <div>
                     <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label>
                     <input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} />
-                    <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
-                      {(codeGivesFreeShipping || subtotal >= 8000) ? 'Ókeypis sending' : area === 'capital' ? 'Höfuðborgarsvæðið — 700 kr' : 'Landsbygðin — 1.500 kr'}
-                    </p>
+                    {subtotal < 8000 && !codeGivesFreeShipping && (
+                      <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
+                        {area === 'capital' ? 'Höfuðborgarsvæðið — 700 kr' : 'Landsbygðin — 1.500 kr'}
+                      </p>
+                    )}
                   </div>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Staður</label><input name="stadur" type="text" required placeholder="Reykjavík" className="form-input" /></div>
                 </div>

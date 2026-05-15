@@ -6,6 +6,15 @@ import { useCart } from '@/lib/cart';
 
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
+function isCapitalArea(postal: string): boolean {
+  const n = parseInt(postal, 10);
+  if (isNaN(n) || postal.length < 3) return true;
+  return (n >= 100 && n <= 172) ||
+         (n >= 200 && n <= 212) ||
+         (n >= 220 && n <= 226) ||
+         (n >= 270 && n <= 271);
+}
+
 export default function KlaraKaupPage() {
   const { cart, subtotal } = useCart();
 
@@ -147,7 +156,7 @@ export default function KlaraKaupPage() {
                 </div>
                 <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Heimilisfang</label><input name="heimilisfang" type="text" required placeholder="Laugavegur 1" className="form-input" /></div>
                 <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14 }}>
-                  <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label><input name="postnumer" type="text" required placeholder="101" className="form-input" /></div>
+                  <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label><input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} /></div>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Staður</label><input name="stadur" type="text" required placeholder="Reykjavík" className="form-input" /></div>
                 </div>
               </div>

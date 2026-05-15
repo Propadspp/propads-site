@@ -23,11 +23,13 @@ export default function ProductDetail({ product }: { product: Product }) {
   const categoryLabel = product.category === 'legghlifar' ? 'Legghlífar' : 'Gripsokkar';
   const categoryHref = product.category === 'legghlifar' ? '/legghlifar' : '/gripsokkar';
   const inStock = product.sizes.some(s => s.stock > 0);
-  const selectedStock = product.sizes.find(s => s.size === selectedSize)?.stock ?? 0;
+  const selectedSizeObj = product.sizes.find(s => s.size === selectedSize);
+  const selectedStock = selectedSizeObj?.stock ?? 0;
+  const currentPrice = selectedSizeObj?.price ?? product.price;
 
   function handleAdd() {
     if (!selectedSize || selectedStock === 0) return;
-    addItem({ id: product._id, name: product.name, price: product.price, category: categoryLabel, size: selectedSize });
+    addItem({ id: product._id, name: product.name, price: currentPrice, category: categoryLabel, size: selectedSize });
   }
 
   return (
@@ -99,7 +101,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-            <span className="font-display" style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff' }}>{fmtPrice(product.price)}</span>
+            <span className="font-display" style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff' }}>{fmtPrice(currentPrice)}</span>
             {!inStock && <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.4)' }}>Uppselt</span>}
           </div>
 

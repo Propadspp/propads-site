@@ -21,7 +21,7 @@ export type Product = {
   price: number;
   description?: string;
   images: { asset: { _ref: string }; alt?: string }[];
-  sizes: { size: string; stock: number }[];
+  sizes: { size: string; stock: number; price?: number }[];
   featured?: boolean;
 };
 
@@ -38,7 +38,7 @@ export async function getProducts(): Promise<Product[]> {
     `*[_type=="product" && !(_id in path("drafts.**"))] | order(_createdAt asc) {
       _id, name, slug, category, price, description,
       images[]{ asset, alt },
-      sizes[]{ size, stock },
+      sizes[]{ size, stock, price },
       featured
     }`
   );
@@ -71,7 +71,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
     `*[_type=="product" && slug.current==$slug && !(_id in path("drafts.**"))][0..0] {
       _id, name, slug, category, price, description,
       images[]{ asset, alt },
-      sizes[]{ size, stock },
+      sizes[]{ size, stock, price },
       featured
     }`,
     { slug }

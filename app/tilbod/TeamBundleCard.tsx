@@ -191,11 +191,9 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
   const cardBorder = isTeam ? '1px solid rgba(184,240,58,0.3)' : '1px solid rgba(255,255,255,0.07)';
   const label = isTeam ? 'Liðspakkinn' : 'Grunnpakkinn';
 
-  const badge = bundle.badge
-    ? bundle.badge
-    : bundle.originalPrice && bundle.originalPrice > bundle.price
-      ? `${Math.round((1 - bundle.price / bundle.originalPrice) * 100)}% AFSLÁTTUR`
-      : null;
+  const discountBadge = bundle.originalPrice && bundle.originalPrice > bundle.price
+    ? `${Math.round((1 - bundle.price / bundle.originalPrice) * 100)}% AFSLÁTTUR`
+    : null;
 
   return (
     <>
@@ -205,9 +203,14 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
         <div style={{ padding: '32px 32px 0' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
             <p style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>{label}</p>
-            {badge && (
-              <span style={{ background: isTeam ? 'rgba(184,240,58,0.15)' : 'rgba(255,77,171,0.15)', color: 'var(--brand)', fontSize: '0.65rem', fontWeight: 700, padding: '3px 9px', borderRadius: 6, letterSpacing: '0.06em' }}>{badge}</span>
-            )}
+            <div style={{ display: 'flex', gap: 6 }}>
+              {bundle.badge && (
+                <span style={{ background: isTeam ? 'rgba(184,240,58,0.15)' : 'rgba(255,77,171,0.15)', color: 'var(--brand)', fontSize: '0.65rem', fontWeight: 700, padding: '3px 9px', borderRadius: 6, letterSpacing: '0.06em' }}>{bundle.badge}</span>
+              )}
+              {discountBadge && (
+                <span style={{ background: isTeam ? 'rgba(184,240,58,0.15)' : 'rgba(255,77,171,0.15)', color: 'var(--brand)', fontSize: '0.65rem', fontWeight: 700, padding: '3px 9px', borderRadius: 6, letterSpacing: '0.06em' }}>{discountBadge}</span>
+              )}
+            </div>
           </div>
           <h2 className="font-display" style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff', marginBottom: 6 }}>{bundle.name}</h2>
           <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: 24 }}>{bundle.description}</p>

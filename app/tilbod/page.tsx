@@ -70,13 +70,14 @@ function StaticBundleCard({ bundle }: { bundle: Bundle }) {
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.055)' }}>
               <div style={{ width: 36, height: 36, borderRadius: 9, background: 'rgba(255,77,171,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {isSokkar ? (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 3 L10 14 L7 14 Q4 14 4 17 Q4 21 8 21 L16 21 Q20 21 20 17 Q20 14 16 14 L14 14 L14 3 Z" />
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 3h8v12l3.5 2.5A3.5 3.5 0 0 1 16 24H8a3.5 3.5 0 0 1-3.5-6.5L8 15V3z"/>
+                    <line x1="8" y1="9" x2="16" y2="9" strokeOpacity="0.35"/>
                   </svg>
                 ) : (
-                  <svg width="16" height="18" viewBox="0 0 20 24" fill="none" stroke="var(--brand)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 2 Q5 2 10 2 Q15 2 15 2 L15 17 Q15 22 10 22 Q5 22 5 17 Z" />
-                    <line x1="5" y1="9" x2="15" y2="9" />
+                  <svg width="15" height="17" viewBox="0 0 20 22" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 2h14v11a7 7 0 0 1-14 0V2z"/>
+                    <line x1="3" y1="8" x2="17" y2="8" strokeOpacity="0.35"/>
                   </svg>
                 )}
               </div>

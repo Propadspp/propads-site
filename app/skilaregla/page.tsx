@@ -58,17 +58,17 @@ const rules = [
     color: 'grey' as const,
     pill: '3 skref',
     title: 'Skilaferillinn',
-    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: '#ff4dab', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og sendum þér skilaupplýsingar — þú greiðir flutningskostnað.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
+    desc: <><strong style={{ color: '#fff' }}>1.</strong> Sendu tölvupóst á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> með pöntunarnúmeri og ástæðu skila.<br /><strong style={{ color: '#fff' }}>2.</strong> Við staðfestum skilin og sendum þér skilaupplýsingar — þú greiðir flutningskostnað.<br /><strong style={{ color: '#fff' }}>3.</strong> Þegar við fáum vöruna staðfestum við inneign eða endurgreiðslu.</>,
     icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
-    iconColor: '#ff4dab',
+    iconColor: 'var(--brand)',
   },
 ];
 
 export default function SkilareglaPage() {
   return (
-    <PageLayout><div style={{ '--brand': '#b8f03a', '--brand-rgb': '184,240,58' } as React.CSSProperties}>
+    <div style={{ '--brand': '#b8f03a', '--brand-rgb': '184,240,58' } as React.CSSProperties}><PageLayout>
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 56px' }}>
-        <p style={{ color: '#ff4dab', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Skilmálar</p>
+        <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Skilmálar</p>
         <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '-0.015em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, maxWidth: 560 }}>Við viljum að þú sért ánægð/ur með kaupin. Lestu reglurnar hér að neðan — við reynum að gera þetta eins einfalt og mögulegt er.</p>
       </section>
@@ -76,7 +76,7 @@ export default function SkilareglaPage() {
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px 56px', display: 'flex', flexDirection: 'column', gap: 32 }}>
         {rules.map(r => (
           <div key={r.title} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '28px 32px', display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: r.iconColor === '#ff4dab' ? 'rgba(255,77,171,0.1)' : 'rgba(184,240,58,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(184,240,58,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke={r.iconColor} strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d={r.icon} />
               </svg>
@@ -98,7 +98,7 @@ export default function SkilareglaPage() {
             <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 6 }}>Spurningar um skil?</h3>
             <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.875rem' }}>Við svörum á 1–3 virkum dögum.</p>
           </div>
-          <a href="mailto:propadspp@gmail.com" className="btn-primary" style={{ padding: '11px 22px', fontSize: '0.875rem', borderRadius: 10, gap: 8, whiteSpace: 'nowrap', background: '#ff4dab' }}>
+          <a href="mailto:propadspp@gmail.com" className="btn-primary" style={{ padding: '11px 22px', fontSize: '0.875rem', borderRadius: 10, gap: 8, whiteSpace: 'nowrap' }}>
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
@@ -106,6 +106,6 @@ export default function SkilareglaPage() {
           </a>
         </div>
       </section>
-    </div></PageLayout>
+    </PageLayout></div>
   );
 }

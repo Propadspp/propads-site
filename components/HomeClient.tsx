@@ -77,7 +77,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
             {players.map(p => {
               const img = p.image
-                ? urlFor(p.image.asset).width(600).auto('format').url()
+                ? urlFor(p.image.asset).rect(130, 54, 820, 940).width(600).auto('format').url()
                 : 'https://placehold.co/600x600/181818/333?text=';
               return (
                 <div key={p._id} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>

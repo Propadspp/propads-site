@@ -4,41 +4,40 @@ import { useState } from 'react';
 import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
-import { type Product } from '@/lib/sanity';
+import { type Product, type GripsokkarBundleTier } from '@/lib/sanity';
 
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 type SizeQty = Record<string, number>;
 
-export default function GripsokkarClient({ products }: { products: Product[] }) {
+export default function GripsokkarClient({ products, tiers }: { products: Product[]; tiers: GripsokkarBundleTier[] }) {
   const product = products[0];
   const price = product?.price ?? 0;
   const sizes = product?.sizes?.map(s => s.size) ?? ['38-42', '42-45'];
 
   const { addItem } = useCart();
   const [singleSize, setSingleSize] = useState(sizes[0] ?? '38-42');
-  const [selectedBundle, setSelectedBundle] = useState<3 | 5>(3);
+  const [selectedTierIdx, setSelectedTierIdx] = useState(0);
   const [bundleQty, setBundleQty] = useState<SizeQty>(() =>
     Object.fromEntries(sizes.map((s, i) => [s, i === 0 ? 1 : 0]))
   );
 
-  const bundle3Price = Math.round(price * 3 * 0.88);
-  const bundle5Price = Math.round(price * 5 * 0.77);
-  const bundlePrice = selectedBundle === 3 ? bundle3Price : bundle5Price;
+  const selectedTier = tiers[selectedTierIdx] ?? { quantity: 3, discountPercent: 12 };
+  const bundlePrice = Math.round(price * selectedTier.quantity * (1 - selectedTier.discountPercent / 100));
   const bundleTotal = Object.values(bundleQty).reduce((a, b) => a + b, 0);
-  const bundleValid = bundleTotal === selectedBundle;
+  const bundleValid = bundleTotal === selectedTier.quantity;
 
   function adjustQty(size: string, delta: number) {
     setBundleQty(prev => {
       const next = { ...prev, [size]: Math.max(0, (prev[size] ?? 0) + delta) };
       const total = Object.values(next).reduce((a, b) => a + b, 0);
-      if (total > selectedBundle) return prev;
+      if (total > selectedTier.quantity) return prev;
       return next;
     });
   }
 
-  function switchBundle(n: 3 | 5) {
-    setSelectedBundle(n);
+  function switchTier(idx: number) {
+    setSelectedTierIdx(idx);
     setBundleQty(Object.fromEntries(sizes.map((s, i) => [s, i === 0 ? 1 : 0])));
   }
 
@@ -54,8 +53,8 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
       .map(([s, q]) => `${q}× ${s}`)
       .join(', ');
     addItem({
-      id: `${product._id}-bundle-${selectedBundle}`,
-      name: `${product.name ?? 'Gripsokkar'} × ${selectedBundle} (${sizeDesc})`,
+      id: `${product._id}-bundle-${selectedTier.quantity}`,
+      name: `${product.name ?? 'Gripsokkar'} × ${selectedTier.quantity} (${sizeDesc})`,
       price: bundlePrice,
       category: 'Gripsokkar',
       size: sizeDesc,
@@ -107,22 +106,21 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
         </div>
 
         {/* Bundle size selector */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 28 }}>
-          {([3, 5] as const).map(n => {
-            const p = n === 3 ? bundle3Price : bundle5Price;
-            const full = price * n;
-            const pct = n === 3 ? '12%' : '23%';
-            const active = selectedBundle === n;
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${tiers.length}, 1fr)`, gap: 16, marginBottom: 28 }}>
+          {tiers.map((tier, idx) => {
+            const p = Math.round(price * tier.quantity * (1 - tier.discountPercent / 100));
+            const full = price * tier.quantity;
+            const active = selectedTierIdx === idx;
             return (
-              <div key={n} onClick={() => switchBundle(n)} style={{ background: active ? '#0f1208' : '#101010', border: `1px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.07)'}`, borderRadius: 20, padding: '24px 28px', cursor: 'pointer' }}>
+              <div key={tier._id} onClick={() => switchTier(idx)} style={{ background: active ? '#0f1208' : '#101010', border: `1px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.07)'}`, borderRadius: 20, padding: '24px 28px', cursor: 'pointer' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{ width: 20, height: 20, borderRadius: '50%', border: `2px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {active && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--brand)' }} />}
                     </div>
-                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>{n} pör</span>
+                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>{tier.quantity} pör</span>
                   </div>
-                  <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>{pct} AFSLÁTTUR</span>
+                  <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>{tier.discountPercent}% AFSLÁTTUR</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
                   <span className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff' }}>{fmtPrice(p)}</span>
@@ -138,7 +136,7 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#fff' }}>Veldu stærðarskiptingu</p>
             <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: bundleValid ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>
-              {bundleTotal} / {selectedBundle} pör
+              {bundleTotal} / {selectedTier.quantity} pör
             </span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -155,7 +153,7 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
                   </div>
                   <button
                     onClick={() => adjustQty(s, 1)}
-                    style={{ width: 36, height: 36, borderRadius: '0 8px 8px 0', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: bundleTotal >= selectedBundle ? 'rgba(255,255,255,0.2)' : '#fff', fontSize: '1.1rem', cursor: 'pointer' }}
+                    style={{ width: 36, height: 36, borderRadius: '0 8px 8px 0', border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: bundleTotal >= selectedTier.quantity ? 'rgba(255,255,255,0.2)' : '#fff', fontSize: '1.1rem', cursor: 'pointer' }}
                   >+</button>
                 </div>
               </div>
@@ -168,8 +166,8 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
           disabled={!bundleValid}
           style={{ width: '100%', padding: 16, background: bundleValid ? 'var(--brand)' : 'rgba(255,255,255,0.08)', color: bundleValid ? '#080808' : 'rgba(255,255,255,0.3)', fontSize: '1rem', fontWeight: 700, border: 'none', borderRadius: 12, cursor: bundleValid ? 'pointer' : 'default', transition: 'background 0.15s, color 0.15s' }}>
           {bundleValid
-            ? `Bæta í körfu — ${selectedBundle} pör · ${fmtPrice(bundlePrice)}`
-            : `Veldu ${selectedBundle - bundleTotal} pör í viðbót`}
+            ? `Bæta í körfu — ${selectedTier.quantity} pör · ${fmtPrice(bundlePrice)}`
+            : `Veldu ${selectedTier.quantity - bundleTotal} pör í viðbót`}
         </button>
       </section>
     </PageLayout>

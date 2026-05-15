@@ -79,6 +79,21 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return results?.[0] ?? null;
 }
 
+export type GripsokkarBundleTier = {
+  _id: string;
+  quantity: number;
+  discountPercent: number;
+  order?: number;
+};
+
+export async function getGripsokkarBundles(): Promise<GripsokkarBundleTier[]> {
+  return client.fetch(
+    `*[_type=="gripsokkarBundle" && active==true && !(_id in path("drafts.**"))] | order(order asc) {
+      _id, quantity, discountPercent, order
+    }`
+  );
+}
+
 export async function getPlayers(): Promise<Player[]> {
   return client.fetch(
     `*[_type=="player" && !(_id in path("drafts.**"))] | order(order asc) {

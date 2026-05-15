@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --brand: #b8f03a;
-  --brand-rgb: 184,240,58;
+  --brand: #ff85c0;
+  --brand-rgb: 255,133,192;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

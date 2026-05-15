@@ -25,9 +25,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const categoryLabel = product.category === 'legghlifar' ? 'Legghlífar' : 'Gripsokkar';
 
+  const selectedSizeObj = product.sizes.find(s => s.size === selectedSize);
+  const currentPrice = selectedSizeObj?.price ?? product.price;
+
   function handleAdd() {
     if (!selectedSize) { setToast('Veldu stærð fyrst'); setTimeout(() => setToast(''), 2000); return; }
-    addItem({ id: product._id, name: product.name, price: product.price, category: categoryLabel, size: selectedSize });
+    addItem({ id: product._id, name: product.name, price: currentPrice, category: categoryLabel, size: selectedSize });
     setToast('Bætt í körfu ✓');
     setTimeout(() => setToast(''), 2000);
   }
@@ -56,7 +59,7 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <span className="font-display" style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{product.price.toLocaleString('is-IS')} kr</span>
+            <span className="font-display" style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{currentPrice.toLocaleString('is-IS')} kr</span>
             <button className="add-btn" onClick={handleAdd}>Í körfu</button>
           </div>
         </div>

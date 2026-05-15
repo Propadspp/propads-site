@@ -76,8 +76,11 @@ export default function HomeClient({ products, players }: { products: Product[];
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
             {players.map(p => {
+              const andri = p._id === '99101c84-ca90-4ce7-af47-49bca535c40a';
               const img = p.image
-                ? urlFor(p.image.asset).rect(130, 54, 820, 940).width(600).auto('format').url()
+                ? (andri
+                    ? urlFor(p.image.asset).rect(130, 108, 820, 864).width(600).auto('format').url()
+                    : urlFor(p.image.asset).rect(0, 108, 1080, 864).width(600).auto('format').url())
                 : 'https://placehold.co/600x600/181818/333?text=';
               return (
                 <div key={p._id} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>

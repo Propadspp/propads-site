@@ -141,22 +141,15 @@ export default function KlaraKaupPage() {
             <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32, marginBottom: 16 }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 24 }}>Sendingarupplýsingar</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                {/* Area selector */}
-                <div>
-                  <p style={{ fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 10 }}>Svæði</p>
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    {([['capital', 'Höfuðborgarsvæðið', codeGivesFreeShipping ? 'Ókeypis' : '700 kr'], ['rural', 'Landsbygðin', codeGivesFreeShipping ? 'Ókeypis' : '1.500 kr']] as const).map(([val, label, price]) => (
-                      <button key={val} type="button" onClick={() => setArea(val)}
-                        style={{ flex: 1, padding: '12px 16px', borderRadius: 12, border: `1.5px solid ${area === val ? 'var(--brand)' : 'rgba(255,255,255,0.1)'}`, background: area === val ? 'rgba(184,240,58,0.06)' : 'transparent', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s, background 0.15s' }}>
-                        <p style={{ fontSize: '0.875rem', fontWeight: 600, color: area === val ? '#fff' : 'rgba(255,255,255,0.6)', marginBottom: 2 }}>{label}</p>
-                        <p style={{ fontSize: '0.75rem', color: codeGivesFreeShipping ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>{price}</p>
-                      </button>
-                    ))}
-                  </div>
-                </div>
                 <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Heimilisfang</label><input name="heimilisfang" type="text" required placeholder="Laugavegur 1" className="form-input" /></div>
                 <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14 }}>
-                  <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label><input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} /></div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label>
+                    <input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} />
+                    <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
+                      {codeGivesFreeShipping ? 'Ókeypis sending' : area === 'capital' ? 'Höfuðborgarsvæðið — 700 kr' : 'Landsbygðin — 1.500 kr'}
+                    </p>
+                  </div>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Staður</label><input name="stadur" type="text" required placeholder="Reykjavík" className="form-input" /></div>
                 </div>
               </div>

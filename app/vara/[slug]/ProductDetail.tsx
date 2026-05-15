@@ -14,6 +14,8 @@ export default function ProductDetail({ product }: { product: Product }) {
     product.sizes.find(s => s.stock > 0)?.size ?? product.sizes[0]?.size ?? ''
   );
   const [activeImg, setActiveImg] = useState(0);
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastSize, setToastSize] = useState('');
 
   const images = product.images ?? [];
   const mainImg = images[activeImg]
@@ -30,10 +32,40 @@ export default function ProductDetail({ product }: { product: Product }) {
   function handleAdd() {
     if (!selectedSize || selectedStock === 0) return;
     addItem({ id: product._id, name: product.name, price: currentPrice, category: categoryLabel, size: selectedSize });
+    setToastSize(selectedSize);
+    setToastVisible(true);
+    setTimeout(() => setToastVisible(false), 2800);
   }
+
+  const thumbSrc = images[0]
+    ? urlFor(images[0].asset).width(120).height(120).fit('crop').auto('format').url()
+    : null;
 
   return (
     <div style={{ minHeight: '100svh', background: '#080808', color: '#fff' }}>
+
+      {/* Add-to-cart toast */}
+      <div style={{
+        position: 'fixed', bottom: 28, right: 28, zIndex: 9000,
+        background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: 16, padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 14,
+        boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+        transform: toastVisible ? 'translateY(0)' : 'translateY(120%)',
+        opacity: toastVisible ? 1 : 0,
+        transition: 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease',
+        pointerEvents: 'none', maxWidth: 320,
+      }}>
+        {thumbSrc && (
+          <div style={{ width: 52, height: 52, borderRadius: 10, overflow: 'hidden', flexShrink: 0, position: 'relative', background: '#111' }}>
+            <Image src={thumbSrc} alt="" fill style={{ objectFit: 'cover' }} />
+          </div>
+        )}
+        <div style={{ minWidth: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--brand)', fontWeight: 700, marginBottom: 2 }}>Bætt í körfu ✓</p>
+          <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{product.name}</p>
+          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)', marginTop: 1 }}>Stærð {toastSize} · {fmtPrice(currentPrice)}</p>
+        </div>
+      </div>
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100, padding: '20px 32px', display: 'flex', gap: 8, alignItems: 'center', background: 'linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%)', backdropFilter: 'blur(12px)' }}>
         <Link href={categoryHref} className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.8125rem' }}>
           ← {categoryLabel}

@@ -8,8 +8,6 @@ function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { cart, removeItem, updateQty, subtotal } = useCart();
   const router = useRouter();
-  const shipping = subtotal >= 8000 ? 0 : 990;
-  const total = subtotal + shipping;
 
   function goCheckout() {
     onClose();
@@ -58,13 +56,9 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8125rem' }}>Millisamtals</span>
               <span style={{ fontSize: '0.8125rem' }}>{fmtPrice(subtotal)}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8125rem' }}>Sending</span>
-              <span style={{ fontSize: '0.8125rem' }}>{shipping === 0 ? <span style={{ color: 'var(--brand)' }}>Ókeypis</span> : fmtPrice(shipping)}</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-              <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.875rem' }}>Samtals</span>
-              <span className="font-display" style={{ fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.025em' }}>{fmtPrice(total)}</span>
+              <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)' }}>Reiknast við greiðslu</span>
             </div>
             <button onClick={goCheckout} className="btn-primary" style={{ width: '100%', padding: 14, fontSize: '1rem', borderRadius: 12 }}>Klára kaup</button>
           </div>

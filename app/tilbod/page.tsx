@@ -72,7 +72,7 @@ function StaticBundleCard({ bundle }: { bundle: Bundle }) {
                 {isSokkar ? (
                   <svg width="15" height="19" viewBox="0 0 22 26" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     {/* cuff + leg going down, then foot curving to the right — J shape */}
-                    <path d="M3 2h9v13h8Q22 15 22 19Q22 23 19 23H5Q3 23 3 19V2z"/>
+                    <path d="M3 2h9v13h8C25 14 25 24 19 23H5Q3 23 3 19V2z"/>
                     <line x1="3" y1="7" x2="12" y2="7" strokeOpacity="0.4"/>
                   </svg>
                 ) : (

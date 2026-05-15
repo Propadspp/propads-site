@@ -20,7 +20,7 @@ export default function Nav({ onCartOpen }: { onCartOpen: () => void }) {
     <>
       <nav style={{ background: 'rgba(8,8,8,0.85)', backdropFilter: 'blur(24px)', borderBottom: '1px solid rgba(255,255,255,0.055)', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" style={{ textDecoration: 'none' }} aria-label="Propads forsíða">
+          <Link href="/" style={{ textDecoration: 'none' }} aria-label="Propads forsíða" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <span className="font-display" style={{ fontSize: '1.3rem', fontWeight: 800, letterSpacing: '-0.035em', color: '#fff' }}>PROPADS</span>
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

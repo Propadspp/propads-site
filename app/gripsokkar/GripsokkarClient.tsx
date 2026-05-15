@@ -4,7 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
-import { type Product, type GripsokkarBundleTier } from '@/lib/sanity';
+import Image from 'next/image';
+import { urlFor, type Product, type GripsokkarBundleTier } from '@/lib/sanity';
 
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
@@ -15,7 +16,9 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
   const price = product?.price ?? 0;
   const sizes = product?.sizes?.map(s => s.size) ?? ['38-42', '42-45'];
 
+  const images = product?.images ?? [];
   const { addItem } = useCart();
+  const [activeImg, setActiveImg] = useState(0);
   const [singleSize, setSingleSize] = useState(sizes[0] ?? '38-42');
   const [selectedTierIdx, setSelectedTierIdx] = useState(0);
   const [bundleQty, setBundleQty] = useState<SizeQty>(() =>
@@ -73,9 +76,28 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
       <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 32px' }}>
         <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, overflow: 'hidden' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 400 }}>
-            <div style={{ background: '#161616', position: 'relative', minHeight: 360, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: '1rem' }}>Mynd kemur</span>
-              <span style={{ position: 'absolute', top: 20, left: 20, background: 'var(--brand)', color: '#080808', fontSize: '0.6875rem', fontWeight: 700, padding: '4px 12px', borderRadius: 7, letterSpacing: '0.05em' }}>NÝTT</span>
+            <div style={{ background: '#161616', position: 'relative', minHeight: 360 }}>
+              {images[activeImg] ? (
+                <Image
+                  src={urlFor(images[activeImg].asset).width(800).height(800).fit('crop').auto('format').url()}
+                  alt={product?.name ?? 'Gripsokkar'}
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  priority
+                />
+              ) : (
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: '1rem' }}>Mynd kemur</span>
+                </div>
+              )}
+              <span style={{ position: 'absolute', top: 20, left: 20, zIndex: 2, background: 'var(--brand)', color: '#080808', fontSize: '0.6875rem', fontWeight: 700, padding: '4px 12px', borderRadius: 7, letterSpacing: '0.05em' }}>NÝTT</span>
+              {images.length > 1 && (
+                <div style={{ position: 'absolute', bottom: 16, left: 0, right: 0, display: 'flex', gap: 8, justifyContent: 'center', zIndex: 2 }}>
+                  {images.map((_, i) => (
+                    <button key={i} onClick={() => setActiveImg(i)} style={{ width: 8, height: 8, borderRadius: '50%', border: 'none', background: activeImg === i ? 'var(--brand)' : 'rgba(255,255,255,0.35)', cursor: 'pointer', padding: 0 }} />
+                  ))}
+                </div>
+              )}
             </div>
             <div style={{ padding: '48px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Gripsokkar</p>

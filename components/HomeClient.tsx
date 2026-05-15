@@ -77,12 +77,12 @@ export default function HomeClient({ products, players }: { products: Product[];
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
             {players.map(p => {
               const img = p.image
-                ? urlFor(p.image.asset).width(400).height(480).fit('crop').auto('format').url()
-                : 'https://placehold.co/400x480/181818/333?text=';
+                ? urlFor(p.image.asset).width(600).auto('format').url()
+                : 'https://placehold.co/600x600/181818/333?text=';
               return (
                 <div key={p._id} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>
-                  <div style={{ position: 'relative', height: 260 }}>
-                    <Image src={img} alt={p.name} fill style={{ objectFit: 'cover' }} />
+                  <div style={{ position: 'relative', aspectRatio: '1/1' }}>
+                    <Image src={img} alt={p.name} fill style={{ objectFit: 'contain' }} />
                   </div>
                   <div style={{ padding: '20px 22px' }}>
                     <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff', marginBottom: 3 }}>{p.name}</p>

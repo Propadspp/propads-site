@@ -66,7 +66,7 @@ const rules = [
 
 export default function SkilareglaPage() {
   return (
-    <PageLayout>
+    <PageLayout><div style={{ '--brand': '#b8f03a', '--brand-rgb': '184,240,58' } as React.CSSProperties}>
       <section style={{ maxWidth: 800, margin: '0 auto', padding: '120px 24px 56px' }}>
         <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Skilmálar</p>
         <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,4rem)', fontWeight: 900, letterSpacing: '-0.015em', lineHeight: 1, color: '#fff', marginBottom: 20 }}>Skilareglur</h1>
@@ -106,6 +106,6 @@ export default function SkilareglaPage() {
           </a>
         </div>
       </section>
-    </PageLayout>
+    </div></PageLayout>
   );
 }

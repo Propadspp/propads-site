@@ -23,7 +23,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <span style={{ background: 'var(--brand)', color: '#080808', fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 5, letterSpacing: '0.06em', textTransform: 'uppercase' }}>NÝTT</span>
           <span style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.8125rem' }}>Gripsokkar komnir á lagerinn →</span>
         </Link>
-        <h1 className="font-display" style={{ fontSize: 'clamp(4.5rem,12vw,12rem)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.015em', color: 'var(--brand)', maxWidth: 1200, marginBottom: 52, textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 0 60px rgba(255,133,192,0.7), 0 0 140px rgba(255,133,192,0.45), 0 0 260px rgba(255,133,192,0.2)' }}>
+        <h1 className="font-display" style={{ fontSize: 'clamp(4.5rem,12vw,12rem)', fontWeight: 900, lineHeight: 0.95, letterSpacing: '-0.015em', color: 'var(--brand)', maxWidth: 1200, marginBottom: 52, textShadow: '0 2px 8px rgba(0,0,0,0.5), 0 0 60px rgba(255,77,171,0.75), 0 0 140px rgba(255,77,171,0.5), 0 0 260px rgba(255,77,171,0.25)' }}>
           Propads
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.0625rem', lineHeight: 1.75, maxWidth: 460, marginBottom: 44 }}>

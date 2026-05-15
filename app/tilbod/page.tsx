@@ -64,17 +64,29 @@ function StaticBundleCard({ bundle }: { bundle: Bundle }) {
         <h2 className="font-display" style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff', marginBottom: 6 }}>{bundle.name}</h2>
         <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.875rem', lineHeight: 1.6, marginBottom: 24 }}>{bundle.description}</p>
         <div style={{ marginBottom: 28, display: 'flex', flexDirection: 'column' }}>
-          {items.map(([t, s]) => (
+          {items.map(([t, s]) => {
+            const isSokkar = t.toLowerCase().includes('sokk') || t.toLowerCase().includes('grip');
+            return (
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.055)' }}>
-              <div style={{ width: 36, height: 36, borderRadius: 9, background: 'rgba(184,240,58,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--brand)' }} />
+              <div style={{ width: 36, height: 36, borderRadius: 9, background: 'rgba(255,77,171,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {isSokkar ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M10 3 L10 14 L7 14 Q4 14 4 17 Q4 21 8 21 L16 21 Q20 21 20 17 Q20 14 16 14 L14 14 L14 3 Z" />
+                  </svg>
+                ) : (
+                  <svg width="16" height="18" viewBox="0 0 20 24" fill="none" stroke="var(--brand)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 2 Q5 2 10 2 Q15 2 15 2 L15 17 Q15 22 10 22 Q5 22 5 17 Z" />
+                    <line x1="5" y1="9" x2="15" y2="9" />
+                  </svg>
+                )}
               </div>
               <div>
                 <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff' }}>{t}</p>
                 <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)' }}>{s}</p>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div style={{ padding: '24px 32px', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>

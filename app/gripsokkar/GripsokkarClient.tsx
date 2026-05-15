@@ -21,15 +21,12 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
   const [bundleQty, setBundleQty] = useState<SizeQty>(() =>
     Object.fromEntries(sizes.map((s, i) => [s, i === 0 ? 1 : 0]))
   );
-  const [toast, setToast] = useState('');
 
-  const bundle3Price = Math.round(price * 3 * 0.86);
-  const bundle5Price = Math.round(price * 5 * 0.79);
+  const bundle3Price = Math.round(price * 3 * 0.88);
+  const bundle5Price = Math.round(price * 5 * 0.77);
   const bundlePrice = selectedBundle === 3 ? bundle3Price : bundle5Price;
   const bundleTotal = Object.values(bundleQty).reduce((a, b) => a + b, 0);
   const bundleValid = bundleTotal === selectedBundle;
-
-  function showToast(msg: string) { setToast(msg); setTimeout(() => setToast(''), 2000); }
 
   function adjustQty(size: string, delta: number) {
     setBundleQty(prev => {
@@ -48,7 +45,6 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
   function addSingle() {
     if (!product) return;
     addItem({ id: product._id, name: product.name, price, category: 'Gripsokkar', size: singleSize });
-    showToast('Bætt í körfu ✓');
   }
 
   function addBundle() {
@@ -64,17 +60,10 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
       category: 'Gripsokkar',
       size: sizeDesc,
     });
-    showToast('Bundle bætt í körfu ✓');
   }
 
   return (
     <PageLayout>
-      {toast && (
-        <div style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 9000, background: '#1a1a1a', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', padding: '12px 20px', borderRadius: 12, fontSize: '0.9rem', fontWeight: 500 }}>
-          {toast}
-        </div>
-      )}
-
       <section style={{ padding: '140px 24px 48px', maxWidth: 1280, margin: '0 auto' }}>
         <Link href="/" className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 32, fontSize: '0.8125rem' }}>← Til baka</Link>
         <h1 className="font-display" style={{ fontSize: 'clamp(2.5rem,6vw,5rem)', fontWeight: 900, letterSpacing: '-0.015em', lineHeight: 1, color: '#fff', marginBottom: 16 }}>Gripsokkar</h1>
@@ -122,7 +111,7 @@ export default function GripsokkarClient({ products }: { products: Product[] }) 
           {([3, 5] as const).map(n => {
             const p = n === 3 ? bundle3Price : bundle5Price;
             const full = price * n;
-            const pct = n === 3 ? '14%' : '21%';
+            const pct = n === 3 ? '12%' : '23%';
             const active = selectedBundle === n;
             return (
               <div key={n} onClick={() => switchBundle(n)} style={{ background: active ? '#0f1208' : '#101010', border: `1px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.07)'}`, borderRadius: 20, padding: '24px 28px', cursor: 'pointer' }}>

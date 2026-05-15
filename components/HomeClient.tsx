@@ -103,7 +103,7 @@ export default function HomeClient({ products, players }: { products: Product[];
         </div>
         {[
           { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).' },
-          { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Við sendum allar pantanir samdægurs ef þær berast fyrir kl. 14:00 á virkum degi. Sending á höfuðborgarsvæðinu kostar 700 kr og er frí ef pantað er fyrir meira en 8.000 kr. Sendum með Póstinum utan höfuðborgarsvæðisins fyrir 1.500 kr — frítt ef verslað er fyrir meira en 8.000 kr.' },
+          { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Við sendum allar pantanir samdægurs ef þær berast fyrir kl. 14:00 á virkum degi. Á höfuðborgarsvæðinu kemur sending yfirleitt sama dag eða daginn eftir. Utan höfuðborgarsvæðisins tekur það 1–3 virka daga.' },
           { q: 'Get ég skilað vöru?', a: <>Já, skilafrestur er 30 dagar. <Link href="/skilaregla" style={{ color: 'var(--brand)', textDecoration: 'none' }}>Smelltu hér til að lesa nánar um skilavörur.</Link></> },
           { q: 'Hvernig hef ég samband?', a: 'Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland. Við svörum eins fljótt og auðið er.' },
         ].map((item, i) => (

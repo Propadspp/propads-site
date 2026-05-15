@@ -82,7 +82,7 @@ export default function HomeClient({ products, players }: { products: Product[];
               return (
                 <div key={p._id} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>
                   <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                    <Image src={img} alt={p.name} fill style={{ objectFit: 'contain' }} />
+                    <Image src={img} alt={p.name} fill style={{ objectFit: 'cover' }} />
                   </div>
                   <div style={{ padding: '20px 22px' }}>
                     <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff', marginBottom: 3 }}>{p.name}</p>

@@ -70,9 +70,10 @@ function StaticBundleCard({ bundle }: { bundle: Bundle }) {
             <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.055)' }}>
               <div style={{ width: 36, height: 36, borderRadius: 9, background: 'rgba(255,77,171,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 {isSokkar ? (
-                  <svg width="22" height="16" viewBox="0 0 26 20" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M2 2h8v9h12Q25 11 25 14Q25 18 22 18H4Q2 18 2 15V2z"/>
-                    <line x1="2" y1="6" x2="10" y2="6" strokeOpacity="0.35"/>
+                  <svg width="15" height="19" viewBox="0 0 22 26" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    {/* cuff + leg going down, then foot curving to the right — J shape */}
+                    <path d="M3 2h9v13h8Q22 15 22 19Q22 23 19 23H5Q3 23 3 19V2z"/>
+                    <line x1="3" y1="7" x2="12" y2="7" strokeOpacity="0.4"/>
                   </svg>
                 ) : (
                   <svg width="15" height="17" viewBox="0 0 20 22" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">

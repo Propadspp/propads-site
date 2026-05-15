@@ -58,7 +58,9 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8125rem' }}>Sending</span>
-              <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)' }}>700 / 1.500 kr</span>
+              {subtotal >= 8000
+                ? <span style={{ fontSize: '0.8125rem', color: 'var(--brand)', fontWeight: 600 }}>Ókeypis</span>
+                : <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)' }}>700 / 1.500 kr</span>}
             </div>
             <button onClick={goCheckout} className="btn-primary" style={{ width: '100%', padding: 14, fontSize: '1rem', borderRadius: 12 }}>Klára kaup</button>
           </div>

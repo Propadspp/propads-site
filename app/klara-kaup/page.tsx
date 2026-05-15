@@ -20,7 +20,7 @@ export default function KlaraKaupPage() {
 
   const [area, setArea] = useState<'capital' | 'rural'>('capital');
   const [codeGivesFreeShipping, setCodeGivesFreeShipping] = useState(false);
-  const shipping = codeGivesFreeShipping ? 0 : area === 'capital' ? 700 : 1500;
+  const shipping = (codeGivesFreeShipping || subtotal >= 8000) ? 0 : area === 'capital' ? 700 : 1500;
 
   const [sameRecipient, setSameRecipient] = useState(true);
   const [loading, setLoading] = useState(false);

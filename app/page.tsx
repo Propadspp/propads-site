@@ -1,7 +1,7 @@
 import { getProducts, getPlayers } from '@/lib/sanity';
 import HomeClient from '@/components/HomeClient';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const [products, players] = await Promise.all([getProducts(), getPlayers()]);

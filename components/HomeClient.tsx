@@ -11,6 +11,15 @@ import { type Product, type Player, urlFor } from '@/lib/sanity';
 export default function HomeClient({ products, players }: { products: Product[]; players: Player[] }) {
   const [cartOpen, setCartOpen] = useState(false);
 
+  const legghlífarImg = products.find(p => p.category === 'legghlifar' && p.images?.[0])?.images?.[0];
+  const gripsokkarImg = products.find(p => p.category === 'gripsokkar' && p.images?.[0])?.images?.[0];
+
+  const catImages: Record<string, string> = {
+    '/legghlifar': legghlífarImg ? urlFor(legghlífarImg).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/gripsokkar': gripsokkarImg ? urlFor(gripsokkarImg).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/tilbod': legghlífarImg ? urlFor(legghlífarImg).width(680).height(320).fit('crop').auto('format').url() : '',
+  };
+
   return (
     <>
       <Nav onCartOpen={() => setCartOpen(true)} />
@@ -45,7 +54,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           ].map(cat => (
             <Link key={cat.href} href={cat.href} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', display: 'flex', flexDirection: 'column', transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.26s ease' }}>
               <div style={{ position: 'relative', height: 320, overflow: 'hidden', background: '#161616' }}>
-                <Image src={`https://placehold.co/680x320/141414/252525?text=`} alt={cat.label} fill style={{ objectFit: 'cover' }} />
+                <Image src={catImages[cat.href] || 'https://placehold.co/680x320/141414/252525?text='} alt={cat.label} fill style={{ objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.75) 0%,transparent 50%)' }} />
               </div>
               <div style={{ padding: 28, background: '#101010', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>

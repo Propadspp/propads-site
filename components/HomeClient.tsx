@@ -6,18 +6,15 @@ import Image from 'next/image';
 import Nav from './Nav';
 import CartDrawer from './CartDrawer';
 import ProductsSection from './ProductsSection';
-import { type Product, type Player, urlFor } from '@/lib/sanity';
+import { type Product, type Player, type SiteSettings, urlFor } from '@/lib/sanity';
 
-export default function HomeClient({ products, players }: { products: Product[]; players: Player[] }) {
+export default function HomeClient({ products, players, settings }: { products: Product[]; players: Player[]; settings: SiteSettings }) {
   const [cartOpen, setCartOpen] = useState(false);
 
-  const legghlífarImg = products.find(p => p.category === 'legghlifar' && p.images?.[0])?.images?.[0];
-  const gripsokkarImg = products.find(p => p.category === 'gripsokkar' && p.images?.[0])?.images?.[0];
-
   const catImages: Record<string, string> = {
-    '/legghlifar': legghlífarImg ? urlFor(legghlífarImg).width(680).height(320).fit('crop').auto('format').url() : '',
-    '/gripsokkar': gripsokkarImg ? urlFor(gripsokkarImg).width(680).height(320).fit('crop').auto('format').url() : '',
-    '/tilbod': legghlífarImg ? urlFor(legghlífarImg).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/legghlifar': settings.legghlifarImage ? urlFor(settings.legghlifarImage).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/gripsokkar': settings.gripsokkarImage ? urlFor(settings.gripsokkarImage).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/tilbod': settings.tilbodImage ? urlFor(settings.tilbodImage).width(680).height(320).fit('crop').auto('format').url() : '',
   };
 
   return (

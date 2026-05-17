@@ -1,9 +1,9 @@
-import { getProducts, getPlayers } from '@/lib/sanity';
+import { getProducts, getPlayers, getSiteSettings } from '@/lib/sanity';
 import HomeClient from '@/components/HomeClient';
 
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const [products, players] = await Promise.all([getProducts(), getPlayers()]);
-  return <HomeClient products={products} players={players} />;
+  const [products, players, settings] = await Promise.all([getProducts(), getPlayers(), getSiteSettings()]);
+  return <HomeClient products={products} players={players} settings={settings} />;
 }

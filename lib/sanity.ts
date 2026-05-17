@@ -94,6 +94,22 @@ export async function getGripsokkarBundles(): Promise<GripsokkarBundleTier[]> {
   );
 }
 
+export type SiteSettings = {
+  legghlifarImage?: { asset: { _ref: string } };
+  gripsokkarImage?: { asset: { _ref: string } };
+  tilbodImage?: { asset: { _ref: string } };
+};
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  return client.fetch(
+    `*[_type=="siteSettings" && !(_id in path("drafts.**"))][0] {
+      legghlifarImage{ asset },
+      gripsokkarImage{ asset },
+      tilbodImage{ asset }
+    }`
+  ) ?? {};
+}
+
 export async function getPlayers(): Promise<Player[]> {
   return client.fetch(
     `*[_type=="player" && !(_id in path("drafts.**"))] | order(order asc) {

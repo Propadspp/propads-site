@@ -33,10 +33,6 @@ export default function HomeClient({ products, players }: { products: Product[];
           <a href="#vorur" className="btn-primary" style={{ padding: '14px 32px' }}>Skoðaðu vörurnar</a>
           <Link href="/um-okkur" className="btn-outline" style={{ padding: '14px 32px' }}>Kynntu þér Propads</Link>
         </div>
-        <div style={{ position: 'absolute', bottom: 28, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, opacity: 0.28, pointerEvents: 'none' }}>
-          <span style={{ fontSize: '0.6875rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Fletttu niður</span>
-          <svg width="14" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ animation: 'arrowBob 2s ease-in-out infinite' }}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-        </div>
       </section>
 
       {/* CATEGORIES */}

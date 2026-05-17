@@ -126,7 +126,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   Hvernig vel ég rétta stærð? <span>▾</span>
                 </summary>
                 <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginTop: 8 }}>
-                  Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).
+                  Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+). S (8×5 cm), M (10×6 cm), L (12×8 cm).
                 </p>
               </details>
             )}

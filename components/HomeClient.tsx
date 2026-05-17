@@ -105,7 +105,7 @@ export default function HomeClient({ products, players }: { products: Product[];
           <h2 className="font-display" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.2rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, color: '#fff' }}>Algengar spurningar</h2>
         </div>
         {[
-          { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+).' },
+          { q: 'Hvernig vel ég rétta stærð?', a: 'Legghlífarnar koma í S (4–8 ára), M (8–12 ára) og L (15+). S (8×5 cm), M (10×6 cm), L (12×8 cm).' },
           { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Á höfuðborgarsvæðinu tekur sending 1–3 virka daga. Utan höfuðborgarsvæðisins sendum við með Póstinum og tekur það venjulega 2–4 virka daga.' },
           { q: 'Get ég skilað vöru?', a: <>Já, skilafrestur er 30 dagar. <Link href="/skilaregla" style={{ color: 'var(--brand)', textDecoration: 'none' }}>Smelltu hér til að lesa nánar um skilavörur.</Link></> },
           { q: 'Hvernig hef ég samband?', a: 'Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland. Við svörum eins fljótt og auðið er.' },

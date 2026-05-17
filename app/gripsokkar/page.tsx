@@ -1,7 +1,7 @@
 import { getProducts, getGripsokkarBundles } from '@/lib/sanity';
 import GripsokkarClient from './GripsokkarClient';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function GripsokkarPage() {
   const [products, tiers] = await Promise.all([getProducts(), getGripsokkarBundles()]);

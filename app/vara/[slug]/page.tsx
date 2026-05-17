@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { getProductBySlug, getProducts } from '@/lib/sanity';
 import ProductDetail from './ProductDetail';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export async function generateStaticParams() {
   const products = await getProducts();

@@ -1,7 +1,7 @@
 import { getProducts } from '@/lib/sanity';
 import LegghlífarClient from './LegghlífarClient';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function LegghlífarPage() {
   const products = await getProducts();

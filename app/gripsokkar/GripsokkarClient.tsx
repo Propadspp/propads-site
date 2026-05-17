@@ -79,7 +79,7 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
             <div style={{ background: '#161616', position: 'relative', minHeight: 360 }}>
               {images[activeImg] ? (
                 <Image
-                  src={urlFor(images[activeImg].asset).width(800).height(800).fit('crop').auto('format').url()}
+                  src={urlFor(images[activeImg]).width(800).height(800).fit('crop').auto('format').url()}
                   alt={product?.name ?? 'Gripsokkar'}
                   fill
                   style={{ objectFit: 'cover' }}

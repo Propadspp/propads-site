@@ -13,8 +13,8 @@ export default async function TilbodPage() {
     .map(p => ({
       _id: p._id,
       name: p.name,
-      imgUrl: p.images?.[0]?.asset
-        ? urlFor(p.images[0].asset).width(120).height(120).fit('crop').auto('format').url()
+      imgUrl: p.images?.[0]
+        ? urlFor(p.images[0]).width(120).height(120).fit('crop').auto('format').url()
         : null,
     }))
     .filter((p, i, arr) => arr.findIndex(x => x._id === p._id) === i);

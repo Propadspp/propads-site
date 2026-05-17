@@ -20,7 +20,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const [toast, setToast] = useState('');
 
   const imgSrc = product.images?.[0]
-    ? urlFor(product.images[0].asset).width(400).height(280).fit('crop').auto('format').url()
+    ? urlFor(product.images[0]).width(400).height(280).fit('crop').auto('format').url()
     : 'https://placehold.co/400x280/141414/222222?text=';
 
   const categoryLabel = product.category === 'legghlifar' ? 'Legghlífar' : 'Gripsokkar';

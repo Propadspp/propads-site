@@ -19,7 +19,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
   const images = product.images ?? [];
   const mainImg = images[activeImg]
-    ? urlFor(images[activeImg].asset).width(800).height(800).fit('crop').auto('format').url()
+    ? urlFor(images[activeImg]).width(800).height(800).fit('crop').auto('format').url()
     : 'https://placehold.co/800x800/141414/222222?text=';
 
   const categoryLabel = product.category === 'legghlifar' ? 'Legghlífar' : 'Gripsokkar';
@@ -38,7 +38,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   }
 
   const thumbSrc = images[0]
-    ? urlFor(images[0].asset).width(120).height(120).fit('crop').auto('format').url()
+    ? urlFor(images[0]).width(120).height(120).fit('crop').auto('format').url()
     : null;
 
   return (
@@ -85,7 +85,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           {images.length > 1 && (
             <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
               {images.map((img, i) => {
-                const thumb = urlFor(img.asset).width(120).height(120).fit('crop').auto('format').url();
+                const thumb = urlFor(img).width(120).height(120).fit('crop').auto('format').url();
                 return (
                   <button key={i} onClick={() => setActiveImg(i)} style={{ width: 72, height: 72, borderRadius: 10, overflow: 'hidden', border: `2px solid ${activeImg === i ? 'var(--brand)' : 'transparent'}`, padding: 0, cursor: 'pointer', flexShrink: 0, position: 'relative', background: '#111' }}>
                     <Image src={thumb} alt="" fill style={{ objectFit: 'cover' }} />

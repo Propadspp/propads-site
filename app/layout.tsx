@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Barlow_Condensed, Inter } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/lib/cart';
+import MetaPixel from '@/components/MetaPixel';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const barlowCondensed = Barlow_Condensed({
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="is" className={`${inter.variable} ${barlowCondensed.variable}`}>
       <body>
+        <MetaPixel />
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

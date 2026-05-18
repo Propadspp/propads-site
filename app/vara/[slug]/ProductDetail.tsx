@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 import { urlFor, type Product } from '@/lib/sanity';
+import Footer from '@/components/Footer';
 
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
@@ -162,6 +163,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

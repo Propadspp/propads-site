@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Nav from './Nav';
 import CartDrawer from './CartDrawer';
+import Footer from './Footer';
 
 export default function PageLayout({ children }: { children: React.ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
       <Nav onCartOpen={() => setCartOpen(true)} />
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
       {children}
+      <Footer />
     </>
   );
 }

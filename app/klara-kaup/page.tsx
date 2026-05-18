@@ -100,17 +100,17 @@ export default function KlaraKaupPage() {
 
   return (
     <PageLayout>
-      <main style={{ maxWidth: 1100, margin: '0 auto', padding: '120px 24px 80px' }}>
+      <main className="checkout-main" style={{ maxWidth: 1100, margin: '0 auto', padding: '120px 24px 80px' }}>
         <p style={{ color: 'var(--brand)', fontSize: '0.8125rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 12 }}>Greiðsla</p>
         <h1 className="font-display" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 48 }}>Klára kaup</h1>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: 48, alignItems: 'start' }}>
+        <div className="checkout-grid">
           <form onSubmit={handleSubmit}>
             {/* Buyer info */}
             <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32, marginBottom: 20 }}>
               <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 24 }}>Upplýsingar kaupanda</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Fornafn</label><input name="fornafn" type="text" required placeholder="Jón" className="form-input" /></div>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Eftirnafn</label><input name="eftirnafn" type="text" required placeholder="Sigurðsson" className="form-input" /></div>
                 </div>
@@ -130,7 +130,7 @@ export default function KlaraKaupPage() {
             {!sameRecipient && (
               <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32, marginBottom: 16 }}>
                 <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 20 }}>Nafn viðtakanda</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Fornafn</label><input name="vid_fornafn" type="text" placeholder="Fornafn" className="form-input" /></div>
                   <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Eftirnafn</label><input name="vid_eftirnafn" type="text" placeholder="Eftirnafn" className="form-input" /></div>
                 </div>
@@ -142,7 +142,7 @@ export default function KlaraKaupPage() {
               <h2 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 24 }}>Sendingarupplýsingar</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Heimilisfang</label><input name="heimilisfang" type="text" required placeholder="Laugavegur 1" className="form-input" /></div>
-                <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14 }}>
+                <div className="form-grid-postal" style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 14 }}>
                   <div>
                     <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label>
                     <input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} />
@@ -217,7 +217,7 @@ export default function KlaraKaupPage() {
           </form>
 
           {/* Order summary */}
-          <div style={{ position: 'sticky', top: 88 }}>
+          <div className="checkout-summary">
             <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>
               <div style={{ padding: '24px 28px', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
                 <h2 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>Yfirlit pöntunar</h2>

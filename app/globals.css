@@ -96,6 +96,18 @@ body::after {
 @keyframes arrowBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* Checkout layout */
+.checkout-grid { display: grid; grid-template-columns: 1fr 420px; gap: 48px; align-items: start; }
+.checkout-summary { position: sticky; top: 88px; }
+
+@media(max-width:768px) {
+  .checkout-grid { display: flex; flex-direction: column; gap: 24px; }
+  .checkout-summary { position: static; order: -1; }
+  .checkout-main { padding-top: 88px !important; }
+  .form-grid-2 { grid-template-columns: 1fr !important; }
+  .form-grid-postal { grid-template-columns: 1fr 1fr !important; }
+}
+
 @media(max-width:640px) {
   .cat-grid, .products-grid, .trust-grid, .footer-grid, .contact-grid { grid-template-columns: 1fr !important; }
 }

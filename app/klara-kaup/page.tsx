@@ -213,7 +213,25 @@ export default function KlaraKaupPage() {
             <button type="submit" disabled={loading || !cart.length} className="btn-primary" style={{ width: '100%', padding: 16, fontSize: '1.0625rem', borderRadius: 14 }}>
               {loading ? 'Hleður...' : 'Greiða með Teya →'}
             </button>
-            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8125rem', textAlign: 'center', marginTop: 12 }}>Þú verður vísað á örugga greiðslusíðu Teya.</p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 16 }}>
+              <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem' }}>Öruggar greiðslur með</span>
+              {/* Visa */}
+              <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style={{ opacity: 0.5 }}>
+                <rect width="38" height="24" rx="4" fill="#1A1F71"/>
+                <text x="19" y="16" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="Arial">VISA</text>
+              </svg>
+              {/* Mastercard */}
+              <svg width="38" height="24" viewBox="0 0 38 24" fill="none" style={{ opacity: 0.5 }}>
+                <rect width="38" height="24" rx="4" fill="#252525"/>
+                <circle cx="15" cy="12" r="7" fill="#EB001B" fillOpacity="0.9"/>
+                <circle cx="23" cy="12" r="7" fill="#F79E1B" fillOpacity="0.9"/>
+                <path d="M19 6.8a7 7 0 0 1 0 10.4A7 7 0 0 1 19 6.8z" fill="#FF5F00" fillOpacity="0.9"/>
+              </svg>
+              {/* Lock icon */}
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.25)" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
           </form>
 
           {/* Order summary */}

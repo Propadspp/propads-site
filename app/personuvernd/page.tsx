@@ -26,19 +26,23 @@ export default function PersonuverndPage() {
         <h1 className="font-display" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 16 }}>Persónuverndarstefna</h1>
         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem', marginBottom: 56 }}>Síðast uppfært: maí 2026</p>
 
-        <Section title="1. Persónuupplýsingar">
-          <p>Við öflum persónuupplýsingum um þig eingöngu til að þjónusta þig. Þessar upplýsingar — nafn, heimilisfang, símanúmer og tölvupóstur — eru eingöngu notaðar til afgreiðslu á pöntunum.</p>
+        <Section title="1. Hverjir við erum">
+          <p>Við erum Propads — íslenskt fyrirtæki sem sérhæfir sig í fótboltavörum. Við tökum persónuvernd alvarlega.</p>
         </Section>
 
-        <Section title="2. Miðlun gagna">
-          <p>Einu skiptin sem við deilum gögnum um þig er ef vara er send í pósti. Þá þarf flutningsaðili að fá upplýsingar um þig til að geta komið sendingunni til þín. Við deilum aldrei gögnum þínum í markaðsskyni.</p>
+        <Section title="2. Hvaða upplýsingar við söfnum">
+          <p>Til að klára pöntun þarftu að gefa upp nafn, heimilisfang, netfang og símanúmer. Kortaupplýsingar eru meðhöndlaðar af Teya og koma aldrei til okkar.</p>
         </Section>
 
-        <Section title="3. Kaupsaga">
+        <Section title="3. Hvernig við notum upplýsingarnar">
+          <p>Við notum gögnin þín til að senda pöntunina og ekkert annað. Þau eru aldrei seld eða deilt með þriðja aðila.</p>
+        </Section>
+
+        <Section title="4. Kaupsaga">
           <p>Kaupsaga viðskiptavinar er læst á öruggu svæði, eingöngu til að þjónusta viðskiptavin varðandi síðustu pöntun. Tími sem pöntun er geymd til uppflettingar eru 365 dagar.</p>
         </Section>
 
-        <Section title="4. Samband">
+        <Section title="5. Samband">
           <p>Spurningar um persónuvernd:<br />
           <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a></p>
         </Section>

@@ -38,26 +38,7 @@ export default function PersonuverndPage() {
           <p>Kaupsaga viðskiptavinar er læst á öruggu svæði, eingöngu til að þjónusta viðskiptavin varðandi síðustu pöntun. Tími sem pöntun er geymd til uppflettingar eru 365 dagar.</p>
         </Section>
 
-        <Section title="4. Kökur (Cookies)">
-          <p style={{ marginBottom: 12 }}>Þessi vefsíða notar kökur í tvennum tilgangi:</p>
-          <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <li><strong style={{ color: '#fff' }}>Nauðsynlegar kökur</strong> — geyma innihald körfunnar þinnar meðan þú verslar. Þessar kökur eru alltaf virkar.</li>
-            <li><strong style={{ color: '#fff' }}>Greiningarkökur</strong> — Meta Pixel hjálpar okkur að skilja hvernig síðan er notuð og bæta auglýsingar. Þessar kökur eru aðeins virkar ef þú samþykkir.</li>
-          </ul>
-        </Section>
-
-        <Section title="5. Réttindi þín (GDPR)">
-          <p style={{ marginBottom: 12 }}>Þú átt rétt á að:</p>
-          <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <li>Fá aðgang að þeim upplýsingum sem við höfum um þig</li>
-            <li>Fá upplýsingarnar leiðréttar ef þær eru rangar</li>
-            <li>Fá upplýsingarnar eyddar</li>
-            <li>Andmæla vinnslu upplýsinga þinna</li>
-          </ul>
-          <p style={{ marginTop: 12 }}>Hafðu samband á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> til að nýta þér þessi réttindi.</p>
-        </Section>
-
-        <Section title="6. Samband">
+        <Section title="4. Samband">
           <p>Spurningar um persónuvernd:<br />
           <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a></p>
         </Section>

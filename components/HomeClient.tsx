@@ -7,6 +7,7 @@ import Nav from './Nav';
 import CartDrawer from './CartDrawer';
 import ProductsSection from './ProductsSection';
 import Footer from './Footer';
+import ChatWidget from './ChatWidget';
 import { type Product, type Player, type SiteSettings, urlFor } from '@/lib/sanity';
 
 export default function HomeClient({ products, players, settings }: { products: Product[]; players: Player[]; settings: SiteSettings }) {
@@ -175,6 +176,7 @@ export default function HomeClient({ products, players, settings }: { products: 
 
       {/* FOOTER */}
       <Footer />
+      <ChatWidget />
     </>
   );
 }

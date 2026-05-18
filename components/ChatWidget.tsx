@@ -120,7 +120,7 @@ const CONFIG = {
       answer: 'Hafðu samband við okkur á propadspp@gmail.com eða Instagram @propadsiceland með pöntunarnúmerið þitt og við sendum þér uppfærslu. 📍',
     },
     {
-      keywords: ['low socks', 'lágir sokkar', 'stuttir sokkar', 'lág legghlíf'],
+      keywords: ['low socks', 'lágir sokkar', 'stuttir sokkar', 'lág legghlíf', 'low', 'stærð low', 'legghlíf low'],
       answer: 'Við mælum með S stærð með lágum sokkum — hún situr vel og truflar ekki. 🛡️',
     },
     {
@@ -133,12 +133,14 @@ const CONFIG = {
 
 function getBotReply(input: string): string {
   const lower = input.toLowerCase();
+  let best: { answer: string; score: number } | null = null;
   for (const faq of CONFIG.faqs) {
-    if (faq.keywords.some(k => lower.includes(k))) {
-      return faq.answer;
+    const score = faq.keywords.filter(k => lower.includes(k)).length;
+    if (score > 0 && (!best || score > best.score)) {
+      best = { answer: faq.answer, score };
     }
   }
-  return CONFIG.fallback;
+  return best ? best.answer : CONFIG.fallback;
 }
 
 export default function ChatWidget() {

@@ -2,10 +2,7 @@
 
 import Script from 'next/script';
 
-const PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-
 export default function MetaPixel() {
-  if (!PIXEL_ID) return null;
   return (
     <Script id="meta-pixel" strategy="afterInteractive">{`
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -13,7 +10,7 @@ export default function MetaPixel() {
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init','${PIXEL_ID}');fbq('track','PageView');
+      fbq('init','1790260345692024');fbq('track','PageView');
     `}</Script>
   );
 }

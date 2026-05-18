@@ -26,8 +26,8 @@ export default function PersonuverndPage() {
         <h1 className="font-display" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 16 }}>Persónuverndarstefna</h1>
         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem', marginBottom: 56 }}>Síðast uppfært: maí 2026</p>
 
-        <Section title="1. Hverjir við erum">
-          <p>Við erum Propads — íslenskt fyrirtæki sem sérhæfir sig í fótboltavörum. Við tökum persónuvernd alvarlega.</p>
+        <Section title="1. Um okkur">
+          <p>Propads er íslenskt fyrirtæki stofnað af fótboltamönnum fyrir fótboltamenn. Markmið okkar er að verða fyrsta val íslenskra fótboltamanna. Við viljum vera hluti af hverjum leik.</p>
         </Section>
 
         <Section title="2. Hvaða upplýsingar við söfnum">

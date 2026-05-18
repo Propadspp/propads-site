@@ -71,6 +71,62 @@ const CONFIG = {
       keywords: ['samband', 'hafa samband', 'netfang', 'email', 'hringja'],
       answer: 'Þú getur sent okkur tölvupóst á propadspp@gmail.com eða fylgt okkur á Instagram @propadsiceland. Við svörum eins fljótt og auðið er! 📧',
     },
+    {
+      keywords: ['verslun', 'búð', 'kaupa í búð', 'kaupa í verslun', 'physical', 'staðbundið'],
+      answer: 'Eins og staðan er núna er kaup eingöngu í boði á netinu á propads.is 🛒',
+    },
+    {
+      keywords: ['útlönd', 'erlendis', 'sending til útlanda', 'ship abroad', 'denmark', 'sweden'],
+      answer: 'Sendingar eru að svo stöddu eingöngu innan Íslands. Við vonum að geta boðið upp á fleiri lönd í framtíðinni! 🌍',
+    },
+    {
+      keywords: ['röng vara', 'rangur pakkinn', 'fékk ranga', 'villa í pöntun', 'wrong item'],
+      answer: 'Hafðu samband við okkur strax á propadspp@gmail.com og við leiðréttum málið eins fljótt og auðið er. 📦',
+    },
+    {
+      keywords: ['panta á síma', 'instagram', 'panta í gegnum', 'dm', 'skilaboð'],
+      answer: 'Ekki er hægt að panta í síma en þú getur sent okkur skilaboð á Instagram @propadsiceland og við hjálpum þér þar! 📲',
+    },
+    {
+      keywords: ['konur', 'stelpur', 'kona', 'girls', 'women', 'henta öllum'],
+      answer: 'Auðvitað! Gripsokkar henta öllum. Notaðu stærðarleiðbeiningarnar okkar til að finna réttu stærðina þína. 🧦',
+    },
+    {
+      keywords: ['breyta pöntun', 'hætta við', 'afpanta', 'cancel', 'breyta'],
+      answer: 'Hafðu samband við okkur strax á propadspp@gmail.com eða Instagram — við reynum að hjálpa ef pöntunin er ekki komin í ferð. ⏱️',
+    },
+    {
+      keywords: ['gerð á íslandi', 'íslenskt', 'framleidd', 'made in', 'hvar eru gerðar'],
+      answer: 'Vörurnar eru ekki framleiddar á Íslandi en eru hannaðar af okkur Íslendingum, sérstaklega fyrir íslenska fótboltamenn. 🇮🇸',
+    },
+    {
+      keywords: ['rennur niður', 'rennur af', 'heldur ekki', 'festir', 'teypa', 'band'],
+      answer: 'Við mælum með að teypa legghlífina fastar við legginn með legghlífabandi. Þetta tryggir að hún haldist á sínum stað allan leikinn. 💪',
+    },
+    {
+      keywords: ['lið', 'félög', 'magn', 'mörg', 'team', 'club', 'heildarverð'],
+      answer: 'Já! Við bjóðum upp á tilboð fyrir lið og félög sem kaupa í magni. Kíktu á /tilbod eða sendu okkur línu á propadspp@gmail.com 🏆',
+    },
+    {
+      keywords: ['þvo', 'þvotta', 'þvottavél', 'hreinsa', 'wash', 'cleaning'],
+      answer: 'Við mælum með að þrífa legghlífarnar með rökum svamp og sápu. Þvottavél er ekki mælt með til að viðhalda líftíma vörunnar. 🧼',
+    },
+    {
+      keywords: ['gjöf', 'gjafaumbúðir', 'gift', 'wrap', 'birthday'],
+      answer: 'Nei því miður, gjafaumbúðir eru ekki í boði að svo stöddu. En vörurnar koma í flottum umbúðum sem henta vel sem gjöf! 🎁',
+    },
+    {
+      keywords: ['fylgjast með', 'rakningarnúmer', 'track', 'tracking', 'hvar er pöntunin'],
+      answer: 'Hafðu samband við okkur á propadspp@gmail.com eða Instagram @propadsiceland með pöntunarnúmerið þitt og við sendum þér uppfærslu. 📍',
+    },
+    {
+      keywords: ['low socks', 'lágir sokkar', 'stuttir sokkar', 'lág legghlíf'],
+      answer: 'Við mælum með S stærð með lágum sokkum — hún situr vel og truflar ekki. 🛡️',
+    },
+    {
+      keywords: ['staðfesting', 'kvittun', 'email eftir kaup', 'staðfestingarpóstur', 'confirmation'],
+      answer: 'Þú færð greiðslukvittun frá Teya eftir kaup. Ef þú hefur spurningar um pöntunina skaltu hafa samband á propadspp@gmail.com 📧',
+    },
   ] as FAQ[],
 };
 // ============================================================

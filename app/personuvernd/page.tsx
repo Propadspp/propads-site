@@ -26,56 +26,39 @@ export default function PersonuverndPage() {
         <h1 className="font-display" style={{ fontSize: 'clamp(2rem,5vw,3.5rem)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1, color: '#fff', marginBottom: 16 }}>Persónuverndarstefna</h1>
         <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.875rem', marginBottom: 56 }}>Síðast uppfært: maí 2026</p>
 
-        <Section title="1. Hverjir við erum">
-          <p>Propads (propadspp@gmail.com) er íslenskt fyrirtæki sem selur fótboltavörur á netinu. Við berum ábyrgð á meðhöndlun persónuupplýsinga sem safnað er í gegnum þessa vefsíðu.</p>
+        <Section title="1. Persónuupplýsingar">
+          <p>Við öflum persónuupplýsingum um þig eingöngu til að þjónusta þig. Þessar upplýsingar — nafn, heimilisfang, símanúmer og tölvupóstur — eru eingöngu notaðar til afgreiðslu á pöntunum.</p>
         </Section>
 
-        <Section title="2. Hvaða upplýsingar við söfnum">
-          <p style={{ marginBottom: 12 }}>Við söfnum einungis þeim upplýsingum sem eru nauðsynlegar til að ljúka pöntun:</p>
-          <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <li>Nafn og netfang</li>
-            <li>Símanúmer (valkvæmt)</li>
-            <li>Sendingarheimilisfang og póstnúmer</li>
-            <li>Pöntunarupplýsingar (vörur, verð, stærðir)</li>
-          </ul>
-          <p style={{ marginTop: 12 }}>Við geymum <strong style={{ color: '#fff' }}>ekki</strong> greiðsluupplýsingar (kortanúmer o.fl.) — þær fara í gegnum Teya, öruggt greiðslufyrirtæki.</p>
+        <Section title="2. Miðlun gagna">
+          <p>Einu skiptin sem við deilum gögnum um þig er ef vara er send í pósti. Þá þarf flutningsaðili að fá upplýsingar um þig til að geta komið sendingunni til þín. Við deilum aldrei gögnum þínum í markaðsskyni.</p>
         </Section>
 
-        <Section title="3. Hvernig við notum upplýsingarnar">
-          <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <li>Til að afgreiða og senda pöntun þína</li>
-            <li>Til að hafa samband ef vandamál koma upp með pöntun</li>
-            <li>Til að uppfylla lagalegar skyldur (bókhald, skattar)</li>
-          </ul>
-          <p style={{ marginTop: 12 }}>Við segjum <strong style={{ color: '#fff' }}>aldrei</strong> frá persónuupplýsingum þínum til þriðja aðila í markaðsskyni.</p>
+        <Section title="3. Kaupsaga">
+          <p>Kaupsaga viðskiptavinar er læst á öruggu svæði, eingöngu til að þjónusta viðskiptavin varðandi síðustu pöntun. Tími sem pöntun er geymd til uppflettingar eru 365 dagar.</p>
         </Section>
 
         <Section title="4. Kökur (Cookies)">
-          <p style={{ marginBottom: 12 }}>Þessi vefsíða notar takmarkaðar kökur:</p>
+          <p style={{ marginBottom: 12 }}>Þessi vefsíða notar kökur í tvennum tilgangi:</p>
           <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <li><strong style={{ color: '#fff' }}>Nauðsynlegar kökur</strong> — geyma innihald körfunnar þinnar meðan þú verslar.</li>
-            <li><strong style={{ color: '#fff' }}>Greiningarkökur</strong> — Meta Pixel (Facebook/Instagram) og Google Analytics hjálpa okkur að skilja hvernig síðan er notuð. Engar persónugreinanlegar upplýsingar eru geymdar.</li>
+            <li><strong style={{ color: '#fff' }}>Nauðsynlegar kökur</strong> — geyma innihald körfunnar þinnar meðan þú verslar. Þessar kökur eru alltaf virkar.</li>
+            <li><strong style={{ color: '#fff' }}>Greiningarkökur</strong> — Meta Pixel hjálpar okkur að skilja hvernig síðan er notuð og bæta auglýsingar. Þessar kökur eru aðeins virkar ef þú samþykkir.</li>
           </ul>
-          <p style={{ marginTop: 12 }}>Þú getur slökkt á greiningarkökum í stillingum vafrann þíns.</p>
         </Section>
 
-        <Section title="5. Réttindi þín samkvæmt GDPR">
+        <Section title="5. Réttindi þín (GDPR)">
           <p style={{ marginBottom: 12 }}>Þú átt rétt á að:</p>
           <ul style={{ paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 8 }}>
             <li>Fá aðgang að þeim upplýsingum sem við höfum um þig</li>
             <li>Fá upplýsingarnar leiðréttar ef þær eru rangar</li>
-            <li>Fá upplýsingarnar eyddar ("réttur til að gleyma")</li>
+            <li>Fá upplýsingarnar eyddar</li>
             <li>Andmæla vinnslu upplýsinga þinna</li>
           </ul>
-          <p style={{ marginTop: 12 }}>Til að nýta þér þessi réttindi skaltu hafa samband við okkur á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a>.</p>
+          <p style={{ marginTop: 12 }}>Hafðu samband á <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a> til að nýta þér þessi réttindi.</p>
         </Section>
 
-        <Section title="6. Hversu lengi geymum við gögn">
-          <p>Pöntunarupplýsingar eru geymdar í 7 ár í samræmi við lög um bókhald. Aðrar upplýsingar eru eyddar þegar þær eru ekki lengur nauðsynlegar.</p>
-        </Section>
-
-        <Section title="7. Samband">
-          <p>Ef þú hefur spurningar um persónuvernd skaltu hafa samband:<br />
+        <Section title="6. Samband">
+          <p>Spurningar um persónuvernd:<br />
           <a href="mailto:propadspp@gmail.com" style={{ color: 'var(--brand)', textDecoration: 'none' }}>propadspp@gmail.com</a></p>
         </Section>
       </main>

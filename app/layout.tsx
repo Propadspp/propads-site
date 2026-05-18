@@ -3,6 +3,7 @@ import { Barlow_Condensed, Inter } from 'next/font/google';
 import './globals.css';
 import { CartProvider } from '@/lib/cart';
 import MetaPixel from '@/components/MetaPixel';
+import CookieBanner from '@/components/CookieBanner';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const barlowCondensed = Barlow_Condensed({
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="is" className={`${inter.variable} ${barlowCondensed.variable}`}>
       <body>
         <MetaPixel />
+        <CookieBanner />
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

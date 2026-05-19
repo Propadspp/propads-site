@@ -1,6 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
+import Groq from 'groq-sdk';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 const SYSTEM_PROMPT = `Þú ert þjónustuver hjá Propads, íslenskum fótboltavörufyrirtæki stofnað af fótboltamönnum fyrir fótboltamenn. Svaraðu alltaf á íslensku, stuttlega og vingjarnlega. Hámarks 3 setningar nema meiri upplýsingar séu nauðsynlegar.
 
@@ -41,7 +41,6 @@ ANNAÐ:
 SAMBAND:
 - Tölvupóstur: propadspp@gmail.com
 - Instagram: @propadsiceland
-- Við svörum eins fljótt og auðið er
 
 Ef spurning er utan þekkingar þinnar: beindu viðskiptavininn á propadspp@gmail.com. Notaðu emoji sparsamlega.`;
 
@@ -49,16 +48,17 @@ export async function POST(request: Request) {
   try {
     const { messages } = await request.json();
 
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
+    const response = await client.chat.completions.create({
+      model: 'llama3-8b-8192',
       max_tokens: 300,
-      system: SYSTEM_PROMPT,
-      messages,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        ...messages,
+      ],
     });
 
-    const reply = response.content[0].type === 'text'
-      ? response.content[0].text
-      : 'Fyrirgefðu, eitthvað fór úrskeiðis. Vinsamlegast hafðu samband á propadspp@gmail.com';
+    const reply = response.choices[0]?.message?.content
+      ?? 'Fyrirgefðu, eitthvað fór úrskeiðis. Vinsamlegast hafðu samband á propadspp@gmail.com';
 
     return Response.json({ reply });
   } catch {

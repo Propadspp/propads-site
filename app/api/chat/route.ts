@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     const { messages } = await request.json();
 
     const response = await client.chat.completions.create({
-      model: 'llama3-8b-8192',
+      model: 'llama-3.1-8b-instant',
       max_tokens: 300,
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
@@ -61,9 +61,10 @@ export async function POST(request: Request) {
       ?? 'Fyrirgefðu, eitthvað fór úrskeiðis. Vinsamlegast hafðu samband á propadspp@gmail.com';
 
     return Response.json({ reply });
-  } catch {
+  } catch (err) {
+    console.error('Groq chat error:', err);
     return Response.json(
-      { reply: 'Fyrirgefðu, eitthvað fór úrskeiðis. Vinsamlegast hafðu samband á propadspp@gmail.com 😊' },
+      { reply: 'Fyrirgefðu, eitthvað fór úrskeiðis. Vinsamlegast hafðu samband á propadspp@gmail.com 😊', error: String(err) },
       { status: 500 }
     );
   }

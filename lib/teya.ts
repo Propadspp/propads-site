@@ -29,11 +29,12 @@ export type CartItem = {
   price: number;
 };
 
-export async function createPaymentLink(cart: CartItem[]): Promise<string> {
+export async function createPaymentLink(cart: CartItem[], area?: string): Promise<string> {
   const accessToken = await getTeyaAccessToken();
 
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const shipping = subtotal >= 8000 ? 0 : 990;
+  const shippingRate = area === 'rural' ? 1500 : 700;
+  const shipping = subtotal >= 8000 ? 0 : shippingRate;
   const total = subtotal + shipping;
 
   const { randomUUID } = await import('crypto');

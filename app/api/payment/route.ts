@@ -3,13 +3,13 @@ import { createPaymentLink, CartItem } from '@/lib/teya';
 
 export async function POST(req: NextRequest) {
   try {
-    const { cart }: { cart: CartItem[] } = await req.json();
+    const { cart, area }: { cart: CartItem[]; area?: string } = await req.json();
 
     if (!cart?.length) {
       return NextResponse.json({ error: 'Karfan er tóm' }, { status: 400 });
     }
 
-    const paymentLink = await createPaymentLink(cart);
+    const paymentLink = await createPaymentLink(cart, area);
     return NextResponse.json({ payment_link: paymentLink });
   } catch (err) {
     console.error('Payment villa:', err);

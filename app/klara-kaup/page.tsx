@@ -83,7 +83,7 @@ export default function KlaraKaupPage() {
       const res = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart, discountCode: appliedCode || undefined, note: note.trim() || undefined }),
+        body: JSON.stringify({ cart, area, discountCode: appliedCode || undefined, note: note.trim() || undefined }),
       });
       const data = await res.json();
       if (data.payment_link) {

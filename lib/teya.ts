@@ -29,14 +29,20 @@ export type CartItem = {
   price: number;
 };
 
-export async function createPaymentLink(cart: CartItem[], area?: string): Promise<string> {
+export async function createPaymentLink(
+  cart: CartItem[],
+  area?: string,
+  overrideTotal?: number,
+  overrideShipping?: number,
+): Promise<{ link: string; linkId: string }> {
   const accessToken = await getTeyaAccessToken();
 
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const shippingRate = area === 'rural' ? 1500 : 700;
-  const shipping = subtotal >= 8000 ? 0 : shippingRate;
-  const total = subtotal + shipping;
+  const shipping = overrideShipping ?? (subtotal >= 8000 ? 0 : shippingRate);
+  const total = overrideTotal ?? (subtotal + shipping);
 
+  const baseUrl = (process.env.NEXT_PUBLIC_URL ?? 'https://propads.is').replace(/\/$/, '');
   const { randomUUID } = await import('crypto');
 
   const res = await fetch(`${API_URL}/v2/payment-links`, {
@@ -57,8 +63,8 @@ export async function createPaymentLink(cart: CartItem[], area?: string): Promis
         })),
         ...(shipping > 0 ? [{ description: 'Sending', quantity: 1, unit_price: shipping }] : []),
       ],
-      success_url: `${process.env.NEXT_PUBLIC_URL}/greidslutekist`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL}/klara-kaup`,
+      success_url: `${baseUrl}/greidslutekist`,
+      cancel_url: `${baseUrl}/klara-kaup`,
       post_success_payment: 'REDIRECT',
       transaction_type: 'SALE',
       type: 'SINGLE_USE',
@@ -68,5 +74,5 @@ export async function createPaymentLink(cart: CartItem[], area?: string): Promis
   const data = await res.json();
   if (!res.ok) throw new Error(`Teya villa: ${JSON.stringify(data)}`);
 
-  return data.payment_link;
+  return { link: data.payment_link, linkId: data.id ?? data.payment_link_id ?? '' };
 }

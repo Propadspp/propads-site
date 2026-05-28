@@ -79,11 +79,29 @@ export default function KlaraKaupPage() {
     if (!cart.length) return;
     setLoading(true);
     setError('');
+
+    const fd = new FormData(e.currentTarget);
+    const customer = {
+      name: `${fd.get('fornafn') ?? ''} ${fd.get('eftirnafn') ?? ''}`.trim(),
+      email: String(fd.get('netfang') ?? ''),
+      phone: String(fd.get('simi') ?? '') || undefined,
+    };
+    const shippingAddress = {
+      street: String(fd.get('heimilisfang') ?? ''),
+      postcode: String(fd.get('postnumer') ?? ''),
+      city: String(fd.get('stadur') ?? ''),
+      notes: note.trim() || undefined,
+    };
+
     try {
       const res = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cart, area, discountCode: appliedCode || undefined, note: note.trim() || undefined }),
+        body: JSON.stringify({
+          cart, area, customer, shippingAddress,
+          subtotal, shippingCost: shipping, total,
+          discountCode: appliedCode || undefined,
+        }),
       });
       const data = await res.json();
       if (data.payment_link) {

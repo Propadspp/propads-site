@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createVerify } from 'crypto';
+import { markOrderPaid } from '@/lib/sanity-server';
+import { sendOrderConfirmation, sendAdminNotification } from '@/lib/email';
 
 function verifySignature(rawBody: string, signature: string): boolean {
   try {
@@ -32,8 +34,24 @@ export async function POST(req: NextRequest) {
     const { event, payment_link_id, status } = payload;
 
     if (event === 'payment.completed' || status === 'PAID') {
-      console.log(`Greiðsla tókst: ${payment_link_id}`);
-      // TODO: merkja pöntun sem greidda í gagnagrunni
+      const order = await markOrderPaid(payment_link_id);
+
+      if (order) {
+        const emailData = {
+          orderNumber: order.orderNumber,
+          customer: order.customer,
+          shippingAddress: order.shippingAddress,
+          items: order.items,
+          subtotal: order.subtotal,
+          shippingCost: order.shippingCost,
+          total: order.total,
+        };
+
+        await Promise.allSettled([
+          sendOrderConfirmation(emailData),
+          sendAdminNotification(emailData),
+        ]);
+      }
     }
 
     return NextResponse.json({ received: true });

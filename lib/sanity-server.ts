@@ -21,6 +21,7 @@ type OrderInput = {
   subtotal: number;
   shippingCost: number;
   total: number;
+  discountCode?: string;
 };
 
 export async function createPendingOrder(data: OrderInput) {
@@ -43,6 +44,7 @@ export async function createPendingOrder(data: OrderInput) {
     shippingCost: data.shippingCost,
     total: data.total,
     payment: { provider: 'teya', paymentStatus: 'pending' },
+    ...(data.discountCode ? { internalNotes: `Afsláttarkóði: ${data.discountCode}` } : {}),
   };
   const result = await writeClient.create(doc);
   return { _id: result._id, orderNumber };
@@ -55,13 +57,24 @@ export async function attachPaymentLinkId(orderId: string, teyaPaymentLinkId: st
 }
 
 export async function markOrderPaid(teyaPaymentLinkId: string) {
-  const order = await writeClient.fetch<{ _id: string; orderNumber: string; customer: { name: string; email: string }; shippingAddress: { street: string; city: string; postcode: string; notes?: string }; items: { productName: string; size: string; quantity: number; unitPrice: number }[]; subtotal: number; shippingCost: number; total: number } | null>(
+  const order = await writeClient.fetch<{
+    _id: string; orderNumber: string;
+    customer: { name: string; email: string };
+    shippingAddress: { street: string; city: string; postcode: string; notes?: string };
+    items: { productName: string; size: string; quantity: number; unitPrice: number }[];
+    subtotal: number; shippingCost: number; total: number;
+    internalNotes?: string; payment: { paymentStatus: string };
+  } | null>(
     `*[_type=="order" && payment.teyaPaymentLinkId==$id][0]{
-      _id, orderNumber, customer, shippingAddress, items, subtotal, shippingCost, total
+      _id, orderNumber, customer, shippingAddress, items, subtotal, shippingCost, total,
+      internalNotes, payment { paymentStatus }
     }`,
     { id: teyaPaymentLinkId }
   );
   if (!order) return null;
+
+  // Idempotency — don't process twice
+  if (order.payment.paymentStatus === 'paid') return null;
 
   await writeClient.patch(order._id).set({
     'payment.paymentStatus': 'paid',
@@ -69,4 +82,15 @@ export async function markOrderPaid(teyaPaymentLinkId: string) {
   }).commit();
 
   return order;
+}
+
+export async function incrementDiscountUsage(code: string) {
+  const doc = await writeClient.fetch<{ _id: string; usageCount?: number } | null>(
+    `*[_type=="discountCode" && code==$code][0]{ _id, usageCount }`,
+    { code: code.toUpperCase().trim() }
+  );
+  if (!doc) return;
+  await writeClient.patch(doc._id)
+    .set({ usageCount: (doc.usageCount ?? 0) + 1 })
+    .commit();
 }

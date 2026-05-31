@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createVerify } from 'crypto';
-import { markOrderPaid } from '@/lib/sanity-server';
+import { markOrderPaid, incrementDiscountUsage } from '@/lib/sanity-server';
 import { sendOrderConfirmation, sendAdminNotification } from '@/lib/email';
 
 function verifySignature(rawBody: string, signature: string): boolean {
@@ -50,6 +50,9 @@ export async function POST(req: NextRequest) {
         await Promise.allSettled([
           sendOrderConfirmation(emailData),
           sendAdminNotification(emailData),
+          order.internalNotes?.startsWith('Afsláttarkóði:')
+            ? incrementDiscountUsage(order.internalNotes.replace('Afsláttarkóði: ', ''))
+            : Promise.resolve(),
         ]);
       }
     }

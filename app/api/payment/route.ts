@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       subtotal?: number;
       shippingCost?: number;
       total?: number;
+      discountCode?: string;
     } = await req.json();
 
     if (!cart?.length) {
@@ -45,6 +46,7 @@ export async function POST(req: NextRequest) {
           subtotal: subtotal ?? cart.reduce((s, i) => s + i.price * i.qty, 0),
           shippingCost: shippingCost ?? 0,
           total: total ?? cart.reduce((s, i) => s + i.price * i.qty, 0),
+          discountCode,
         });
         orderId = order._id;
       } catch (err) {

@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
       subtotal,
       shippingCost,
       total,
+      discountCode,
     }: {
       cart: CartItem[];
       area?: string;

@@ -76,7 +76,7 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
       <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 32px' }}>
         <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, overflow: 'hidden' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 400 }}>
-            <div style={{ background: '#161616', position: 'relative', minHeight: 360 }}>
+            <div style={{ background: '#161616', position: 'relative', aspectRatio: '1/1' }}>
               {images[activeImg] ? (
                 <Image
                   src={urlFor(images[activeImg]).width(800).height(800).fit('crop').auto('format').url()}

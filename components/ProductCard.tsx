@@ -39,7 +39,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <>
       <article className="product-card">
         <Link href={`/vara/${product.slug.current}`} style={{ textDecoration: 'none', display: 'block' }}>
-          <div style={{ position: 'relative', height: 280, overflow: 'hidden', background: '#161616' }}>
+          <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: '#161616' }}>
             <Image src={imgSrc} alt={product.name} fill style={{ objectFit: 'cover', transition: 'transform 0.4s ease' }} />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.65) 0%,transparent 55%)', pointerEvents: 'none' }} />
             {product.featured && <span style={{ position: 'absolute', top: 12, right: 12, zIndex: 3, fontSize: '0.6875rem', fontWeight: 700, padding: '3px 10px', borderRadius: 7, letterSpacing: '0.05em', background: 'var(--brand)', color: '#080808' }}>NÝTT</span>}

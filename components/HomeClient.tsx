@@ -51,7 +51,7 @@ export default function HomeClient({ products, players, settings }: { products: 
             { href: '/tilbod', label: 'Tilboð', cta: 'Sjá pakka →' },
           ].map(cat => (
             <Link key={cat.href} href={cat.href} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', display: 'flex', flexDirection: 'column', transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.26s ease' }}>
-              <div style={{ position: 'relative', height: 320, overflow: 'hidden', background: '#161616' }}>
+              <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#161616' }}>
                 <Image src={catImages[cat.href] || 'https://placehold.co/680x320/141414/252525?text='} alt={cat.label} fill style={{ objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.75) 0%,transparent 50%)' }} />
               </div>

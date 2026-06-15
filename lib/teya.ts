@@ -1,5 +1,5 @@
-const TOKEN_URL = 'https://id.teya.xyz/oauth/v2/oauth-token';
-const API_URL = 'https://api.teya.xyz';
+const TOKEN_URL = 'https://id.teya.com/oauth/v2/oauth-token';
+const API_URL = 'https://api.teya.com';
 
 export async function getTeyaAccessToken(): Promise<string> {
   const res = await fetch(TOKEN_URL, {

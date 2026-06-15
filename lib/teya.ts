@@ -56,7 +56,7 @@ export async function createPaymentLink(
       store_id: process.env.TEYA_STORE_ID,
       amount: { currency: 'ISK', value: total },
       line_items: (() => {
-        const items = [
+        const fullItems = [
           ...cart.map((item) => ({
             description: `${item.name} – Stærð ${item.size}`,
             quantity: item.qty,
@@ -64,10 +64,11 @@ export async function createPaymentLink(
           })),
           ...(shipping > 0 ? [{ description: 'Sending', quantity: 1, unit_price: shipping }] : []),
         ];
-        const lineSum = items.reduce((s, i) => s + i.unit_price * i.quantity, 0);
-        const discount = lineSum - total;
-        if (discount > 0) items.push({ description: 'Afsláttur', quantity: 1, unit_price: -discount });
-        return items;
+        const lineSum = fullItems.reduce((s, i) => s + i.unit_price * i.quantity, 0);
+        if (lineSum !== total) {
+          return [{ description: 'Propads pöntun', quantity: 1, unit_price: total }];
+        }
+        return fullItems;
       })(),
       success_url: `${baseUrl}/greidslutekist`,
       cancel_url: `${baseUrl}/klara-kaup`,

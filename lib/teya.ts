@@ -55,14 +55,20 @@ export async function createPaymentLink(
     body: JSON.stringify({
       store_id: process.env.TEYA_STORE_ID,
       amount: { currency: 'ISK', value: total },
-      line_items: [
-        ...cart.map((item) => ({
-          description: `${item.name} – Stærð ${item.size}`,
-          quantity: item.qty,
-          unit_price: item.price,
-        })),
-        ...(shipping > 0 ? [{ description: 'Sending', quantity: 1, unit_price: shipping }] : []),
-      ],
+      line_items: (() => {
+        const items = [
+          ...cart.map((item) => ({
+            description: `${item.name} – Stærð ${item.size}`,
+            quantity: item.qty,
+            unit_price: item.price,
+          })),
+          ...(shipping > 0 ? [{ description: 'Sending', quantity: 1, unit_price: shipping }] : []),
+        ];
+        const lineSum = items.reduce((s, i) => s + i.unit_price * i.quantity, 0);
+        const discount = lineSum - total;
+        if (discount > 0) items.push({ description: 'Afsláttur', quantity: 1, unit_price: -discount });
+        return items;
+      })(),
       success_url: `${baseUrl}/greidslutekist`,
       cancel_url: `${baseUrl}/klara-kaup`,
       post_success_payment: 'REDIRECT',

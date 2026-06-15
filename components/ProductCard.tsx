@@ -28,9 +28,13 @@ export default function ProductCard({ product }: { product: Product }) {
   const selectedSizeObj = product.sizes.find(s => s.size === selectedSize);
   const currentPrice = selectedSizeObj?.price ?? product.price;
 
+  const emailImage = product.images?.[0]
+    ? urlFor(product.images[0]).width(300).height(300).fit('crop').auto('format').url()
+    : undefined;
+
   function handleAdd() {
     if (!selectedSize) { setToast('Veldu stærð fyrst'); setTimeout(() => setToast(''), 2000); return; }
-    addItem({ id: product._id, name: product.name, price: currentPrice, category: categoryLabel, size: selectedSize });
+    addItem({ id: product._id, name: product.name, price: currentPrice, category: categoryLabel, size: selectedSize, image: emailImage });
     setToast('Bætt í körfu ✓');
     setTimeout(() => setToast(''), 2000);
   }

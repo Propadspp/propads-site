@@ -43,6 +43,7 @@ export async function POST(req: NextRequest) {
             size: item.size,
             quantity: item.qty,
             unitPrice: item.price,
+            imageUrl: item.image,
           })),
           subtotal: subtotal ?? cart.reduce((s, i) => s + i.price * i.qty, 0),
           shippingCost: shippingCost ?? 0,

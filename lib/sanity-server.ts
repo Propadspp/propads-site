@@ -17,7 +17,7 @@ function generateOrderNumber() {
 type OrderInput = {
   customer: { name: string; email: string; phone?: string };
   shippingAddress: { street: string; city: string; postcode: string; notes?: string };
-  items: { productName: string; size: string; quantity: number; unitPrice: number }[];
+  items: { productName: string; size: string; quantity: number; unitPrice: number; imageUrl?: string }[];
   subtotal: number;
   shippingCost: number;
   total: number;
@@ -39,6 +39,7 @@ export async function createPendingOrder(data: OrderInput) {
       size: item.size,
       quantity: item.quantity,
       unitPrice: item.unitPrice,
+      ...(item.imageUrl ? { imageUrl: item.imageUrl } : {}),
     })),
     subtotal: data.subtotal,
     shippingCost: data.shippingCost,
@@ -61,7 +62,7 @@ export async function markOrderPaid(teyaPaymentLinkId: string) {
     _id: string; orderNumber: string;
     customer: { name: string; email: string };
     shippingAddress: { street: string; city: string; postcode: string; notes?: string };
-    items: { productName: string; size: string; quantity: number; unitPrice: number }[];
+    items: { productName: string; size: string; quantity: number; unitPrice: number; imageUrl?: string }[];
     subtotal: number; shippingCost: number; total: number;
     internalNotes?: string; payment: { paymentStatus: string };
   } | null>(

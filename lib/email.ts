@@ -8,7 +8,7 @@ type OrderEmailData = {
   orderNumber: string;
   customer: { name: string; email: string };
   shippingAddress: { street: string; city: string; postcode: string; country?: string; notes?: string };
-  items: { productName: string; size: string; quantity: number; unitPrice: number }[];
+  items: { productName: string; size: string; quantity: number; unitPrice: number; imageUrl?: string }[];
   subtotal: number;
   shippingCost: number;
   total: number;
@@ -19,10 +19,16 @@ function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 function orderRows(items: OrderEmailData['items']) {
   return items.map(i => `
     <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #1e1e1e;color:#fff;font-size:14px">${i.productName}</td>
-      <td style="padding:10px 8px;border-bottom:1px solid #1e1e1e;color:rgba(255,255,255,0.5);font-size:14px;text-align:center">${i.size}</td>
-      <td style="padding:10px 8px;border-bottom:1px solid #1e1e1e;color:rgba(255,255,255,0.5);font-size:14px;text-align:center">${i.quantity}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #1e1e1e;color:#fff;font-size:14px;text-align:right">${fmtPrice(i.unitPrice * i.quantity)}</td>
+      <td style="padding:14px 0;border-bottom:1px solid #1e1e1e;vertical-align:middle">
+        <div style="display:flex;align-items:center;gap:14px">
+          ${i.imageUrl ? `<img src="${i.imageUrl}" width="64" height="64" alt="${i.productName}" style="border-radius:10px;object-fit:cover;flex-shrink:0;display:block" />` : `<div style="width:64px;height:64px;border-radius:10px;background:#1a1a1a;flex-shrink:0"></div>`}
+          <div>
+            <div style="color:#fff;font-size:14px;font-weight:600;margin-bottom:3px">${i.productName}</div>
+            <div style="color:rgba(255,255,255,0.4);font-size:12px">Stærð ${i.size} · ${i.quantity} stk</div>
+          </div>
+        </div>
+      </td>
+      <td style="padding:14px 0;border-bottom:1px solid #1e1e1e;color:#fff;font-size:14px;font-weight:600;text-align:right;white-space:nowrap;vertical-align:middle">${fmtPrice(i.unitPrice * i.quantity)}</td>
     </tr>`).join('');
 }
 
@@ -59,14 +65,6 @@ export async function sendOrderConfirmation(order: OrderEmailData) {
     <p style="color:rgba(255,255,255,0.45);font-size:14px;margin:0 0 28px">Pöntunarnúmer: <strong style="color:#fff">${order.orderNumber}</strong></p>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px">
-      <thead>
-        <tr>
-          <th style="text-align:left;font-size:11px;color:rgba(255,255,255,0.35);font-weight:500;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Vara</th>
-          <th style="text-align:center;font-size:11px;color:rgba(255,255,255,0.35);font-weight:500;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Stærð</th>
-          <th style="text-align:center;font-size:11px;color:rgba(255,255,255,0.35);font-weight:500;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Magn</th>
-          <th style="text-align:right;font-size:11px;color:rgba(255,255,255,0.35);font-weight:500;padding-bottom:8px;text-transform:uppercase;letter-spacing:0.08em">Verð</th>
-        </tr>
-      </thead>
       <tbody>${orderRows(order.items)}</tbody>
     </table>
 

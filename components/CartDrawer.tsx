@@ -5,9 +5,30 @@ import { useRouter } from 'next/navigation';
 
 function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
+function UpsellBanner({ category, onClose }: { category: 'legghlífar' | 'gripsokkar'; onClose: () => void }) {
+  const router = useRouter();
+  const isLegg = category === 'legghlífar';
+  return (
+    <div style={{ margin: '16px 0', background: 'rgba(184,240,58,0.06)', border: '1px solid rgba(184,240,58,0.18)', borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ flex: 1 }}>
+        <p style={{ fontSize: '0.75rem', color: 'var(--brand)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 3 }}>Menn kaupa oft saman</p>
+        <p style={{ fontSize: '0.875rem', color: '#fff', fontWeight: 600 }}>{isLegg ? 'Gripsokkar' : 'Legghlífar'}</p>
+      </div>
+      <button
+        onClick={() => { onClose(); router.push(isLegg ? '/gripsokkar' : '/legghlifar'); }}
+        style={{ padding: '8px 14px', background: 'var(--brand)', color: '#080808', border: 'none', borderRadius: 9, fontSize: '0.8125rem', fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
+      >Skoða →</button>
+    </div>
+  );
+}
+
 export default function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { cart, removeItem, updateQty, subtotal } = useCart();
   const router = useRouter();
+
+  const hasLegg = cart.some(i => i.category === 'Legghlífar');
+  const hasGrip = cart.some(i => i.category === 'Gripsokkar');
+  const upsell = cart.length > 0 && hasLegg && !hasGrip ? 'legghlífar' : cart.length > 0 && hasGrip && !hasLegg ? 'gripsokkar' : null;
 
   function goCheckout() {
     onClose();
@@ -49,6 +70,12 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
             ))
           )}
         </div>
+
+        {upsell && (
+          <div style={{ padding: '0 24px' }}>
+            <UpsellBanner category={upsell} onClose={onClose} />
+          </div>
+        )}
 
         {cart.length > 0 && (
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: '20px 24px' }}>

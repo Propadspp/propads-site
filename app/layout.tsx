@@ -5,6 +5,7 @@ import { CartProvider } from '@/lib/cart';
 import MetaPixel from '@/components/MetaPixel';
 import CookieBanner from '@/components/CookieBanner';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const barlowCondensed = Barlow_Condensed({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CookieBanner />
         <CartProvider>{children}</CartProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

@@ -31,10 +31,13 @@ export async function POST(req: NextRequest) {
     }
 
     const payload = JSON.parse(rawBody);
-    const { event, payment_link_id, status } = payload;
+    console.log('Teya webhook payload:', JSON.stringify(payload));
 
-    if (event === 'payment.completed' || status === 'PAID') {
-      const order = await markOrderPaid(payment_link_id);
+    const { event, payment_link_id, status } = payload;
+    const linkId = payment_link_id ?? payload.id ?? payload.paymentLinkId ?? payload.payment_link?.id;
+
+    if (event === 'payment.completed' || event === 'payment_link.paid' || status === 'PAID' || status === 'paid') {
+      const order = await markOrderPaid(linkId);
 
       if (order) {
         const emailData = {

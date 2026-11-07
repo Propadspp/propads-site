@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { fmtPrice } from '@/lib/format';
 
 function getResend() { return new Resend(process.env.RESEND_API_KEY ?? process.env.resend_api); }
 const FROM = () => process.env.FROM_EMAIL ?? 'onboarding@resend.dev';
@@ -14,7 +15,6 @@ type OrderEmailData = {
   total: number;
 };
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 function orderRows(items: OrderEmailData['items']) {
   return items.map(i => `
@@ -117,6 +117,28 @@ export async function sendAdminNotification(order: OrderEmailData) {
     from: `Propads <${FROM()}>`,
     to: ADMIN(),
     subject: `🛒 Ný pöntun ${order.orderNumber} — ${fmtPrice(order.total)}`,
+    html,
+  });
+}
+
+function escapeHtml(s: string) {
+  return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+}
+
+// Skilaboð úr "Hafðu samband" forminu á forsíðunni. Hægt er að ýta á "Svara" í póstinum til að svara sendanda.
+export async function sendContactMessage(msg: { name: string; email: string; message: string }) {
+  const html = baseTemplate('Ný fyrirspurn', `
+    <p style="color:#b8f03a;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin:0 0 8px">Hafðu samband</p>
+    <h1 style="color:#fff;font-size:22px;font-weight:900;margin:0 0 20px">Fyrirspurn frá ${escapeHtml(msg.name)}</h1>
+    <p style="font-size:13px;color:rgba(255,255,255,0.5);margin:0 0 16px">${escapeHtml(msg.email)}</p>
+    <p style="font-size:15px;color:#fff;line-height:1.7;white-space:pre-wrap;margin:0">${escapeHtml(msg.message)}</p>
+  `);
+
+  return getResend().emails.send({
+    from: `Propads <${FROM()}>`,
+    to: ADMIN(),
+    replyTo: msg.email,
+    subject: `Fyrirspurn frá ${msg.name}`,
     html,
   });
 }

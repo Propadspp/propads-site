@@ -3,24 +3,14 @@
 import { useState } from 'react';
 import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
-
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
-
-function isCapitalArea(postal: string): boolean {
-  const n = parseInt(postal, 10);
-  if (isNaN(n) || postal.length < 3) return true;
-  return (n >= 100 && n <= 172) ||
-         (n >= 200 && n <= 212) ||
-         (n >= 220 && n <= 226) ||
-         (n >= 270 && n <= 271);
-}
+import { fmtPrice } from '@/lib/format';
+import { calcShipping, cartHasBundle, isCapitalArea } from '@/lib/shipping';
 
 export default function KlaraKaupPage() {
   const { cart, subtotal } = useCart();
 
   const [area, setArea] = useState<'capital' | 'rural'>('capital');
   const [codeGivesFreeShipping, setCodeGivesFreeShipping] = useState(false);
-  const shipping = (codeGivesFreeShipping || subtotal >= 8000) ? 0 : area === 'capital' ? 700 : 1500;
 
   const [sameRecipient, setSameRecipient] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -35,9 +25,9 @@ export default function KlaraKaupPage() {
   const [noteOpen, setNoteOpen] = useState(false);
   const [note, setNote] = useState('');
 
+  const hasBundle = cartHasBundle(cart);
+  const shipping = calcShipping({ subtotal, hasBundle, freeShippingCode: codeGivesFreeShipping, capital: area === 'capital' });
   const total = Math.max(0, subtotal + shipping - discountAmount);
-
-  const hasBundle = cart.some(item => item.category === 'bundle');
 
   async function applyDiscount() {
     if (!discountCode.trim()) return;
@@ -97,9 +87,10 @@ export default function KlaraKaupPage() {
       const res = await fetch('/api/payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // Þjónninn reiknar verð, sendingu og afslátt sjálfur — við sendum bara hvað er í körfunni.
         body: JSON.stringify({
-          cart, area, customer, shippingAddress,
-          subtotal, shippingCost: shipping, total,
+          cart: cart.map(i => ({ id: i.id, name: i.name, size: i.size, qty: i.qty, category: i.category, image: i.image })),
+          customer, shippingAddress,
           discountCode: appliedCode || undefined,
         }),
       });
@@ -107,7 +98,7 @@ export default function KlaraKaupPage() {
       if (data.payment_link) {
         window.location.href = data.payment_link;
       } else {
-        setError('Villa kom upp. Reyndu aftur.');
+        setError(data.error && data.error !== 'Villa kom upp' ? data.error : 'Villa kom upp. Reyndu aftur.');
       }
     } catch {
       setError('Tenging mistókst. Reyndu aftur.');
@@ -164,7 +155,7 @@ export default function KlaraKaupPage() {
                   <div>
                     <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.55)', marginBottom: 8 }}>Póstnúmer</label>
                     <input name="postnumer" type="text" required placeholder="101" className="form-input" onChange={e => setArea(isCapitalArea(e.target.value) ? 'capital' : 'rural')} />
-                    {subtotal < 8000 && !codeGivesFreeShipping && (
+                    {shipping > 0 && (
                       <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
                         {area === 'capital' ? 'Höfuðborgarsvæðið — 700 kr' : 'Landsbygðin — 1.500 kr'}
                       </p>

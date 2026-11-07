@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 import { urlFor, type Product } from '@/lib/sanity';
+import { fmtNumber } from '@/lib/format';
 
 function Toast({ msg }: { msg: string }) {
   return (
@@ -63,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-            <span className="font-display" style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{currentPrice.toLocaleString('is-IS')} kr</span>
+            <span className="font-display" style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>{fmtNumber(currentPrice)} kr</span>
             <button className="add-btn" onClick={handleAdd}>Í körfu</button>
           </div>
         </div>

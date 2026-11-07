@@ -16,9 +16,9 @@ const Pill = ({ color, label }: { color: 'green' | 'red' | 'grey'; label: string
 const rules = [
   {
     color: 'green' as const,
-    pill: 'Fullur endurgreiðsla eða inneign',
+    pill: 'Full endurgreiðsla eða inneign',
     title: 'Ónotaðar vörur',
-    desc: <>Vörur í upprunalegu ástandi með órofnum umbúðum. Skilafrestur er <strong style={{ color: '#fff' }}>30 dagar</strong> frá móttöku. Fullur endurgreiðsla eða inneign (gildir í 1 ár) — að þínum vali.</>,
+    desc: <>Vörur í upprunalegu ástandi með órofnum umbúðum. Skilafrestur er <strong style={{ color: '#fff' }}>30 dagar</strong> frá móttöku. Full endurgreiðsla eða inneign (gildir í 1 ár) — að þínum vali.</>,
     icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
     iconColor: 'var(--brand)',
   },
@@ -48,7 +48,7 @@ const rules = [
   },
   {
     color: 'green' as const,
-    pill: 'Fullur endurgreiðsla',
+    pill: 'Full endurgreiðsla',
     title: 'Gallaðar eða skemmdar vörur',
     desc: <>Ef vara berst gölluð fær þú fulla endurgreiðslu. Hafðu samband innan <strong style={{ color: '#fff' }}>30 daga</strong> frá móttöku með mynd.</>,
     icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',

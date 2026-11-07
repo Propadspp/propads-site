@@ -6,8 +6,8 @@ import PageLayout from '@/components/PageLayout';
 import { useCart } from '@/lib/cart';
 import Image from 'next/image';
 import { urlFor, type Product, type GripsokkarBundleTier } from '@/lib/sanity';
+import { fmtPrice } from '@/lib/format';
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 type SizeQty = Record<string, number>;
 

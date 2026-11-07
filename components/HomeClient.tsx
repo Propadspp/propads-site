@@ -11,6 +11,28 @@ import { type Product, type Player, type SiteSettings, urlFor } from '@/lib/sani
 
 export default function HomeClient({ products, players, settings }: { products: Product[]; players: Player[]; settings: SiteSettings }) {
   const [cartOpen, setCartOpen] = useState(false);
+  const [contactState, setContactState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  async function sendContact(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    setContactState('sending');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nafn: fd.get('nafn'), netfang: fd.get('netfang'), skilabod: fd.get('skilabod'), vefsida: fd.get('vefsida'),
+        }),
+      });
+      if (!res.ok) throw new Error();
+      form.reset();
+      setContactState('sent');
+    } catch {
+      setContactState('error');
+    }
+  }
 
   const catImages: Record<string, string> = {
     '/legghlifar': settings.legghlifarImage ? urlFor(settings.legghlifarImage).width(680).height(320).fit('crop').auto('format').url() : '',
@@ -52,7 +74,9 @@ export default function HomeClient({ products, players, settings }: { products: 
           ].map(cat => (
             <Link key={cat.href} href={cat.href} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', display: 'flex', flexDirection: 'column', transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.26s ease' }}>
               <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#161616' }}>
-                <Image src={catImages[cat.href] || 'https://placehold.co/680x320/141414/252525?text='} alt={cat.label} fill style={{ objectFit: 'cover' }} />
+                {catImages[cat.href]
+                  ? <Image src={catImages[cat.href]} alt={cat.label} fill style={{ objectFit: 'cover' }} />
+                  : <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 30% 100%, rgba(255,77,171,0.16) 0%, transparent 70%), linear-gradient(135deg, #161616 0%, #0e0e0e 100%)' }} />}
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.75) 0%,transparent 50%)' }} />
               </div>
               <div style={{ padding: 28, background: '#101010', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
@@ -84,14 +108,16 @@ export default function HomeClient({ products, players, settings }: { products: 
                 ? (andri
                     ? urlFor(p.image.asset).rect(130, 108, 820, 864).width(600).auto('format').url()
                     : urlFor(p.image.asset).rect(0, 108, 1080, 864).width(600).auto('format').url())
-                : 'https://placehold.co/600x600/181818/333?text=';
+                : null;
               return (
                 <div key={p._id} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden' }}>
                   <div style={{ position: 'relative', aspectRatio: '1/1' }}>
-                    <Image src={img} alt={p.name} fill style={{ objectFit: 'cover' }} />
+                    {img
+                      ? <Image src={img} alt={p.name} fill style={{ objectFit: 'cover' }} />
+                      : <div aria-hidden style={{ position: 'absolute', inset: 0, background: '#181818' }} />}
                   </div>
-                  <div style={{ padding: '20px 22px' }}>
-                    <p style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff', marginBottom: 3 }}>{p.name}</p>
+                  <div style={{ padding: 'clamp(12px, 3vw, 22px)' }}>
+                    <p style={{ fontSize: 'clamp(0.75rem, 3.2vw, 0.9375rem)', fontWeight: 600, color: '#fff', marginBottom: 3, overflowWrap: 'anywhere' }}>{p.name}</p>
                     <p style={{ fontSize: '0.75rem', color: 'var(--brand)', fontWeight: 500 }}>{p.club}</p>
                   </div>
                 </div>
@@ -108,7 +134,7 @@ export default function HomeClient({ products, players, settings }: { products: 
           <h2 className="font-display" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.2rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, color: '#fff' }}>Algengar spurningar</h2>
         </div>
         {[
-          { q: 'Hvernig vel ég rétta stærð?', a: <>Legghlífar koma í 3 mismunandi stærðum:<br/>S — 4–8 ára — 8×5 cm<br/>M — 8–12 ára — 10×6 cm<br/>L — 15+ ára — 12×8 cm</> },
+          { q: 'Hvernig vel ég rétta stærð?', a: <>Legghlífar koma í 3 mismunandi stærðum:<br/>S — 4–8 ára — 8×5 cm<br/>M — 8–12 ára — 10×6 cm<br/>L — 12+ ára — 12×8 cm</> },
           { q: 'Hversu fljótt fæ ég pöntunina?', a: 'Á höfuðborgarsvæðinu tekur sending 1–3 virka daga. Utan höfuðborgarsvæðisins sendum við með Póstinum og tekur það venjulega 2–4 virka daga.' },
           { q: 'Get ég skilað vöru?', a: <>Já, skilafrestur er 30 dagar. <Link href="/skilaregla" style={{ color: 'var(--brand)', textDecoration: 'none' }}>Smelltu hér til að lesa nánar um skilavörur.</Link></> },
           { q: 'Hvernig hef ég samband?', a: 'Sendu okkur tölvupóst á propadspp@gmail.com eða fylgdu okkur á Instagram @propadsiceland. Við svörum eins fljótt og auðið er.' },
@@ -126,7 +152,7 @@ export default function HomeClient({ products, players, settings }: { products: 
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.055)', borderBottom: '1px solid rgba(255,255,255,0.055)', background: '#0c0c0c' }}>
         <div className="trust-grid" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
           {[
-            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>, title: 'Frí sending', sub: 'Ef verslað er fyrir 8.000 kr eða meira' },
+            { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>, title: 'Frí sending', sub: 'Yfir 8.000 kr eða með tilboðspakka' },
             { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>, title: '30 daga skilafrestur', sub: 'Ónotaðar vörur í upprunalegum umbúðum' },
             { icon: <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>, title: 'Pósturinn um allt land', sub: '1-3 virka daga á höfuðborgarsvæðinu' },
           ].map((t, i) => (
@@ -145,18 +171,22 @@ export default function HomeClient({ products, players, settings }: { products: 
           <h2 className="font-display" style={{ fontSize: 'clamp(1.5rem,2.5vw,2.2rem)', fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, color: '#fff' }}>Hafðu samband</h2>
         </div>
         <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'start' }}>
-          <form onSubmit={e => { e.preventDefault(); const f = e.target as HTMLFormElement; window.location.href = `mailto:propadspp@gmail.com?subject=${encodeURIComponent('Fyrirspurn frá ' + (f.querySelector('[name=nafn]') as HTMLInputElement).value)}&body=${encodeURIComponent((f.querySelector('[name=skilabod]') as HTMLTextAreaElement).value)}`; }} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <form onSubmit={sendContact} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Gildra fyrir ruslpóst-róbóta — falið fyrir fólki */}
+            <input name="vefsida" type="text" tabIndex={-1} autoComplete="off" aria-hidden style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
             <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Nafn</label><input name="nafn" type="text" required placeholder="Nafnið þitt" className="form-input" /></div>
             <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Netfang</label><input name="netfang" type="email" required placeholder="netfang@dæmi.is" className="form-input" /></div>
             <div><label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 500, color: 'rgba(255,255,255,0.6)', marginBottom: 8 }}>Skilaboð</label><textarea name="skilabod" rows={5} required placeholder="Skrifaðu skilaboðin hér..." className="form-input" style={{ resize: 'vertical' }} /></div>
-            <button type="submit" className="btn-primary" style={{ padding: '14px 32px', alignSelf: 'flex-start' }}>Senda</button>
+            <button type="submit" disabled={contactState === 'sending'} className="btn-primary" style={{ padding: '14px 32px', alignSelf: 'flex-start' }}>{contactState === 'sending' ? 'Sendi...' : 'Senda'}</button>
+            {contactState === 'sent' && <p role="status" style={{ color: 'var(--brand)', fontSize: '0.875rem' }}>Takk! Skilaboðin eru komin til okkar — við svörum eins fljótt og auðið er.</p>}
+            {contactState === 'error' && <p role="alert" style={{ color: '#ff8080', fontSize: '0.875rem' }}>Ekki tókst að senda. Sendu okkur frekar póst á propadspp@gmail.com.</p>}
           </form>
           <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, padding: 32 }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#fff', marginBottom: 24 }}>Tengiliðaupplýsingar</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {[
                 { label: 'Tölvupóstur', value: 'propadspp@gmail.com', href: 'mailto:propadspp@gmail.com' },
-                { label: 'Instagram', value: '@propadsiceland', href: '#' },
+                { label: 'Instagram', value: '@propadsiceland', href: 'https://instagram.com/propadsiceland' },
               ].map(c => (
                 <div key={c.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
                   <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(255,77,171,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>

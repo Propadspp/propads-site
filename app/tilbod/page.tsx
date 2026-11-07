@@ -19,6 +19,14 @@ export default async function TilbodPage() {
     }))
     .filter((p, i, arr) => arr.findIndex(x => x._id === p._id) === i);
 
+  // "Fullt verð" pakkans reiknast út frá raunverulegum vöruverðum, svo afsláttarprósentan sé alltaf rétt.
+  const legghlifPrice = Math.max(0, ...allProducts.filter(p => p.category === 'legghlifar').map(p => p.price));
+  const sokkaPrice = allProducts.find(p => p.category === 'gripsokkar')?.price ?? 0;
+  const pricedBundles = bundles.map(b => ({
+    ...b,
+    originalPrice: b.legghlif * legghlifPrice + b.gripsokkar * sokkaPrice,
+  }));
+
   return (
     <PageLayout>
       <section style={{ maxWidth: 900, margin: '0 auto', padding: '140px 24px 64px' }}>
@@ -29,8 +37,8 @@ export default async function TilbodPage() {
       </section>
 
       <section style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px 80px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 20 }}>
-          {bundles.map(b =>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(380px, 100%), 1fr))', gap: 20 }}>
+          {pricedBundles.map(b =>
             <TeamBundleCard key={b._id} bundle={b} legghlifar={legghlifar} />
           )}
         </div>

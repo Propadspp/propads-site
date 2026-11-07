@@ -13,6 +13,7 @@ export default function CookieBanner() {
 
   function accept() {
     localStorage.setItem('cookie-consent', 'accepted');
+    (window as unknown as { fbq?: (...a: unknown[]) => void }).fbq?.('consent', 'grant');
     setVisible(false);
   }
 

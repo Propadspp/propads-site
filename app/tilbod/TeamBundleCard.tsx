@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart';
 import { type Bundle } from '@/lib/sanity';
+import { fmtPrice } from '@/lib/format';
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 const LEGGHLIF_SIZES = ['S', 'M', 'L'];
 const SOKKA_SIZES = ['38-42', '42-45'];
@@ -31,6 +31,15 @@ function ShieldIcon() {
     <svg width="15" height="17" viewBox="0 0 20 22" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 2h14v11a7 7 0 0 1-14 0V2z"/>
       <line x1="3" y1="8" x2="17" y2="8" strokeOpacity="0.35"/>
+    </svg>
+  );
+}
+
+function TruckIcon() {
+  return (
+    <svg width="17" height="15" viewBox="0 0 24 20" fill="none" stroke="var(--brand)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M1 3h13v11H1zM14 7h5l4 4v3h-9z"/>
+      <circle cx="6" cy="16" r="2"/><circle cx="18" cy="16" r="2"/>
     </svg>
   );
 }
@@ -184,6 +193,7 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
       `${bundle.gripsokkar}× Gripsokkar`,
       isTeam ? `${Math.round(bundle.gripsokkar / bundle.legghlif)} pör á hvern` : `${bundle.gripsokkar} pör, veldu stærð`,
     ],
+    ['Frí heimsending', 'Fylgir öllum tilboðspökkum'],
   ].filter(Boolean) as [string, string][];
 
   const iconBg = isTeam ? 'rgba(184,240,58,0.1)' : 'rgba(255,77,171,0.1)';
@@ -221,7 +231,7 @@ export default function TeamBundleCard({ bundle, legghlifar }: { bundle: Bundle;
               return (
                 <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.055)' }}>
                   <div style={{ width: 36, height: 36, borderRadius: 9, background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    {isSokkar ? <SockIcon /> : <ShieldIcon />}
+                    {t === 'Frí heimsending' ? <TruckIcon /> : isSokkar ? <SockIcon /> : <ShieldIcon />}
                   </div>
                   <div>
                     <p style={{ fontSize: '0.9rem', fontWeight: 600, color: '#fff' }}>{t}</p>

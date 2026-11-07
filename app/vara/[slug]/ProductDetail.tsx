@@ -6,8 +6,8 @@ import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 import { urlFor, type Product } from '@/lib/sanity';
 import Footer from '@/components/Footer';
+import { fmtPrice } from '@/lib/format';
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 export default function ProductDetail({ product }: { product: Product }) {
   const { addItem } = useCart();
@@ -127,7 +127,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                   Hvernig vel ég rétta stærð? <span>▾</span>
                 </summary>
                 <p style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginTop: 8 }}>
-                  Legghlífar koma í 3 mismunandi stærðum:<br/>S — 4–8 ára — 8×5 cm<br/>M — 8–12 ára — 10×6 cm<br/>L — 15+ ára — 12×8 cm
+                  Legghlífar koma í 3 mismunandi stærðum:<br/>S — 4–8 ára — 8×5 cm<br/>M — 8–12 ára — 10×6 cm<br/>L — 12+ ára — 12×8 cm
                 </p>
               </details>
             )}

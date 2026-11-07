@@ -5,7 +5,7 @@ export default function StaerdLeidbeinPage() {
   const sizes = [
     { size: 'S', label: 'LOW', age: '4–8 ára', desc: 'Minni legghlíf sem veitir grunnhlífð á miðjum legg. Hentar yngstu leikmönnum og þeim sem vilja lágmarks hlífð.', active: false },
     { size: 'M', label: 'MID — Vinsælust', age: '8–12 ára', desc: 'Meðalstærð sem veitir góða hlífð á miðjum legg. Best fyrir flesta unglinga leikmenn.', active: true },
-    { size: 'L', label: 'HIGH', age: '15+ ára', desc: 'Stærsta legghlífin — 13 cm á hæð og veitir hámarks hlífð á miðjum legg. Fullkomin fyrir fullorðna leikmenn.', active: false },
+    { size: 'L', label: 'HIGH', age: '12+ ára', desc: 'Stærsta legghlífin — 12 cm á hæð og veitir hámarks hlífð á miðjum legg. Fullkomin fyrir fullorðna leikmenn.', active: false },
   ];
 
   return (

@@ -30,18 +30,28 @@ export type CartItem = {
   image?: string;
 };
 
+// Sækir greiðsluhlekk beint frá Teya — notað til að staðfesta að hann hafi raunverulega verið greiddur.
+export async function getPaymentLink(id: string): Promise<Record<string, unknown> | null> {
+  if (!/^[A-Za-z0-9_-]{1,100}$/.test(id)) return null;
+  const accessToken = await getTeyaAccessToken();
+  const res = await fetch(`${API_URL}/v2/payment-links/${encodeURIComponent(id)}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    cache: 'no-store',
+  });
+  if (!res.ok) {
+    console.error('Teya getPaymentLink villa:', res.status, await res.text());
+    return null;
+  }
+  return res.json();
+}
+
+// Verð, sending og heildarupphæð koma frá lib/pricing (reiknað á þjóninum).
 export async function createPaymentLink(
   cart: CartItem[],
-  area?: string,
-  overrideTotal?: number,
-  overrideShipping?: number,
+  total: number,
+  shipping: number,
 ): Promise<{ link: string; linkId: string }> {
   const accessToken = await getTeyaAccessToken();
-
-  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const shippingRate = area === 'rural' ? 1500 : 700;
-  const shipping = overrideShipping ?? (subtotal >= 8000 ? 0 : shippingRate);
-  const total = overrideTotal ?? (subtotal + shipping);
 
   const baseUrl = (process.env.NEXT_PUBLIC_URL ?? 'https://propads.is').replace(/\/$/, '');
   const { randomUUID } = await import('crypto');

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createPaymentLink, CartItem } from '@/lib/teya';
+import { createPaymentLink } from '@/lib/teya';
 import { createPendingOrder, attachPaymentLinkId } from '@/lib/sanity-server';
+import { priceCart, PricingError, type IncomingCartItem } from '@/lib/pricing';
 
 type Customer = { name: string; email: string; phone?: string };
 type ShippingAddress = { street: string; city: string; postcode: string; notes?: string };
@@ -9,26 +10,31 @@ export async function POST(req: NextRequest) {
   try {
     const {
       cart,
-      area,
       customer,
       shippingAddress,
-      subtotal,
-      shippingCost,
-      total,
       discountCode,
     }: {
-      cart: CartItem[];
-      area?: string;
+      cart: IncomingCartItem[];
       customer?: Customer;
       shippingAddress?: ShippingAddress;
-      subtotal?: number;
-      shippingCost?: number;
-      total?: number;
       discountCode?: string;
     } = await req.json();
 
     if (!cart?.length) {
       return NextResponse.json({ error: 'Karfan er tóm' }, { status: 400 });
+    }
+
+    // Öll verð, sending og afsláttur eru reiknuð hér á þjóninum úr Sanity —
+    // tölur frá vafranum eru hunsaðar svo enginn geti breytt verðinu sjálfur.
+    let priced;
+    try {
+      priced = await priceCart(cart, shippingAddress?.postcode ?? '', discountCode);
+    } catch (err) {
+      if (err instanceof PricingError) {
+        console.error('Pricing villa:', err.message);
+        return NextResponse.json({ error: 'Karfan þín er úrelt — tæmdu hana og settu vörurnar aftur í.' }, { status: 400 });
+      }
+      throw err;
     }
 
     // Save pending order to Sanity if we have customer info
@@ -38,17 +44,17 @@ export async function POST(req: NextRequest) {
         const order = await createPendingOrder({
           customer,
           shippingAddress,
-          items: cart.map(item => ({
+          items: priced.items.map(item => ({
             productName: item.name,
             size: item.size,
             quantity: item.qty,
             unitPrice: item.price,
             imageUrl: item.image,
           })),
-          subtotal: subtotal ?? cart.reduce((s, i) => s + i.price * i.qty, 0),
-          shippingCost: shippingCost ?? 0,
-          total: total ?? cart.reduce((s, i) => s + i.price * i.qty, 0),
-          discountCode,
+          subtotal: priced.subtotal,
+          shippingCost: priced.shipping,
+          total: priced.total,
+          discountCode: priced.discountCode,
         });
         orderId = order._id;
       } catch (err) {
@@ -56,7 +62,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const { link, linkId } = await createPaymentLink(cart, area, total, shippingCost);
+    const { link, linkId } = await createPaymentLink(priced.items, priced.total, priced.shipping);
 
     // Attach Teya payment link ID to the order
     if (orderId && linkId) {

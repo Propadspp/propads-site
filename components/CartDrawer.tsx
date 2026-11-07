@@ -2,8 +2,9 @@
 
 import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
+import { fmtPrice } from '@/lib/format';
+import { cartHasBundle, FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 function UpsellBanner({ category, onClose }: { category: 'legghlífar' | 'gripsokkar'; onClose: () => void }) {
   const router = useRouter();
@@ -85,7 +86,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8125rem' }}>Sending</span>
-              {subtotal >= 8000
+              {(subtotal >= FREE_SHIPPING_THRESHOLD || cartHasBundle(cart))
                 ? <span style={{ fontSize: '0.8125rem', color: 'var(--brand)', fontWeight: 600 }}>Ókeypis</span>
                 : <span style={{ fontSize: '0.8125rem', color: 'rgba(255,255,255,0.4)' }}>700 / 1.500 kr</span>}
             </div>

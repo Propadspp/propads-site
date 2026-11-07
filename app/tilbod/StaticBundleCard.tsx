@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useCart } from '@/lib/cart';
 import { type Bundle } from '@/lib/sanity';
+import { fmtPrice } from '@/lib/format';
 
-function fmtPrice(n: number) { return n.toLocaleString('is-IS') + ' kr'; }
 
 const LEGGHLIF_SIZES = ['S', 'M', 'L'];
 const SOKKA_SIZES = ['38-42', '42-45'];

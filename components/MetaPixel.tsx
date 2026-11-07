@@ -10,6 +10,9 @@ export default function MetaPixel() {
       n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
       (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      // Pixel sendir ekkert til Meta fyrr en gestur ýtir á "Samþykkja" í kökuborðanum.
+      var c=null;try{c=localStorage.getItem('cookie-consent')}catch(e){}
+      fbq('consent', c==='accepted' ? 'grant' : 'revoke');
       fbq('init','1790260345692024');fbq('track','PageView');
     `}</Script>
   );

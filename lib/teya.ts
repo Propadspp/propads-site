@@ -50,6 +50,7 @@ export async function createPaymentLink(
   cart: CartItem[],
   total: number,
   shipping: number,
+  orderId?: string | null,
 ): Promise<{ link: string; linkId: string }> {
   const accessToken = await getTeyaAccessToken();
 
@@ -81,7 +82,8 @@ export async function createPaymentLink(
         }
         return fullItems;
       })(),
-      success_url: `${baseUrl}/greidslutekist`,
+      // pantun=… svo „Greiðsla tókst“-síðan geti staðfest greiðsluna hjá Teya (varaleið ef webhook berst ekki)
+      success_url: orderId ? `${baseUrl}/greidslutekist?pantun=${encodeURIComponent(orderId)}` : `${baseUrl}/greidslutekist`,
       cancel_url: `${baseUrl}/klara-kaup`,
       post_success_payment: 'REDIRECT',
       transaction_type: 'SALE',

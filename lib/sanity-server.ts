@@ -58,16 +58,17 @@ export async function attachPaymentLinkId(orderId: string, teyaPaymentLinkId: st
 }
 
 export async function markOrderPaid(teyaPaymentLinkId: string) {
+  if (!teyaPaymentLinkId) return null;
   const order = await writeClient.fetch<{
-    _id: string; orderNumber: string;
+    _id: string; _rev: string; orderNumber: string;
     customer: { name: string; email: string };
     shippingAddress: { street: string; city: string; postcode: string; notes?: string };
     items: { productName: string; size: string; quantity: number; unitPrice: number; imageUrl?: string }[];
     subtotal: number; shippingCost: number; total: number;
     internalNotes?: string; payment: { paymentStatus: string };
   } | null>(
-    `*[_type=="order" && payment.teyaPaymentLinkId==$id][0]{
-      _id, orderNumber, customer, shippingAddress, items, subtotal, shippingCost, total,
+    `*[_type=="order" && payment.teyaPaymentLinkId==$id && !(_id in path("drafts.**"))][0]{
+      _id, _rev, orderNumber, customer, shippingAddress, items, subtotal, shippingCost, total,
       internalNotes, payment { paymentStatus }
     }`,
     { id: teyaPaymentLinkId }
@@ -77,12 +78,27 @@ export async function markOrderPaid(teyaPaymentLinkId: string) {
   // Idempotency — don't process twice
   if (order.payment.paymentStatus === 'paid') return null;
 
-  await writeClient.patch(order._id).set({
-    'payment.paymentStatus': 'paid',
-    'payment.paidAt': new Date().toISOString(),
-  }).commit();
+  // ifRevisionId: ef webhook og „Greiðsla tókst“-síðan koma á sama tíma vinnur bara annað þeirra,
+  // svo pósturinn sendist ekki tvisvar.
+  try {
+    await writeClient.patch(order._id).ifRevisionId(order._rev).set({
+      'payment.paymentStatus': 'paid',
+      'payment.paidAt': new Date().toISOString(),
+    }).commit();
+  } catch (err) {
+    console.warn('markOrderPaid: pöntun breyttist á meðan (líklega þegar merkt greidd)', err);
+    return null;
+  }
 
   return order;
+}
+
+export async function getOrderPaymentInfo(orderId: string) {
+  if (!/^[A-Za-z0-9_-]{1,100}$/.test(orderId)) return null;
+  return writeClient.fetch<{ linkId?: string; paymentStatus?: string } | null>(
+    `*[_type=="order" && _id==$id][0]{ "linkId": payment.teyaPaymentLinkId, "paymentStatus": payment.paymentStatus }`,
+    { id: orderId }
+  );
 }
 
 export async function incrementDiscountUsage(code: string) {

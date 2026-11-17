@@ -1,84 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createVerify } from 'crypto';
-import { markOrderPaid, incrementDiscountUsage } from '@/lib/sanity-server';
-import { sendOrderConfirmation, sendAdminNotification } from '@/lib/email';
-import { getPaymentLink } from '@/lib/teya';
+import { finalizePaidOrder, isLinkPaidAtTeya } from '@/lib/order-paid';
 
+// Teya webhook (sjá docs.teya.com/online-payments/webhooks):
+//   event: "payment.succeeded.v1", data.payment_link_id, undirskrift í "x-teya-signature" (SHA256withRSA, base64)
 function verifySignature(rawBody: string, signature: string): boolean {
   try {
     const publicKeyDer = Buffer.from(process.env.TEYA_WEBHOOK_PUBLIC_KEY!, 'base64');
     const verify = createVerify('SHA256');
     verify.update(rawBody);
-    return verify.verify(
-      { key: publicKeyDer, format: 'der', type: 'spki' },
-      signature,
-      'base64'
-    );
+    return verify.verify({ key: publicKeyDer, format: 'der', type: 'spki' }, signature, 'base64');
   } catch {
     return false;
   }
 }
 
 export async function POST(req: NextRequest) {
+  let rawBody = '';
   try {
-    const rawBody = await req.text();
-    const signature = req.headers.get('x-signature') ?? '';
+    rawBody = await req.text();
+    const signature = req.headers.get('x-teya-signature') ?? req.headers.get('x-signature') ?? '';
+    const signatureOk = !!(process.env.TEYA_WEBHOOK_PUBLIC_KEY && signature && verifySignature(rawBody, signature));
 
-    let signatureOk = false;
-    if (process.env.TEYA_WEBHOOK_PUBLIC_KEY && signature) {
-      if (!verifySignature(rawBody, signature)) {
-        console.error('Teya webhook: ógild undirskrift');
-        return NextResponse.json({ error: 'Ógild undirskrift' }, { status: 401 });
-      }
-      signatureOk = true;
+    let payload: Record<string, unknown>;
+    try {
+      payload = JSON.parse(rawBody);
+    } catch {
+      console.error('Teya webhook: ólæsilegt JSON', rawBody.slice(0, 300));
+      return NextResponse.json({ received: true });
+    }
+    const data = (payload.data ?? payload) as Record<string, unknown>;
+    const event = String(payload.event ?? '');
+    const linkId = String(
+      data.payment_link_id ?? payload.payment_link_id ?? (payload.payment_link as { id?: string } | undefined)?.id ?? ''
+    );
+    console.log(`Teya webhook: event="${event}" link="${linkId}" undirskrift=${signatureOk ? 'gild' : 'engin/ógild'}`);
+
+    const claimsPaid =
+      event.startsWith('payment.succeeded') ||
+      event === 'payment.completed' ||
+      event === 'payment_link.paid';
+
+    if (!claimsPaid || !linkId) {
+      return NextResponse.json({ received: true });
     }
 
-    const payload = JSON.parse(rawBody);
-    console.log('Teya webhook payload:', JSON.stringify(payload));
-
-    const { event, payment_link_id, status } = payload;
-    const linkId = String(payment_link_id ?? payload.id ?? payload.paymentLinkId ?? payload.payment_link?.id ?? '');
-
-    const claimsPaid = event === 'payment.completed' || event === 'payment_link.paid' || status === 'PAID' || status === 'paid';
-
-    if (claimsPaid && !signatureOk) {
-      // Engin gild undirskrift — spyrjum Teya beint hvort hlekkurinn hafi verið greiddur,
-      // svo enginn geti falsað "greiðsla tókst" skilaboð.
-      const link = await getPaymentLink(linkId);
-      const teyaStatus = String(link?.status ?? '').toUpperCase();
-      if (teyaStatus !== 'COMPLETED' && teyaStatus !== 'PAID') {
-        console.error(`Teya webhook: greiðsla EKKI staðfest hjá Teya (link ${linkId}, staða "${teyaStatus || 'engin'}") — pöntun ekki merkt greidd`);
-        return NextResponse.json({ received: true, confirmed: false });
-      }
+    // Án gildrar undirskriftar treystum við ekki skilaboðunum — spyrjum Teya beint.
+    if (!signatureOk && !(await isLinkPaidAtTeya(linkId))) {
+      console.error(`Teya webhook: greiðsla EKKI staðfest hjá Teya (link ${linkId}) — pöntun ekki merkt greidd`);
+      return NextResponse.json({ received: true, confirmed: false });
     }
 
-    if (claimsPaid) {
-      const order = await markOrderPaid(linkId);
-
-      if (order) {
-        const emailData = {
-          orderNumber: order.orderNumber,
-          customer: order.customer,
-          shippingAddress: order.shippingAddress,
-          items: order.items,
-          subtotal: order.subtotal,
-          shippingCost: order.shippingCost,
-          total: order.total,
-        };
-
-        await Promise.allSettled([
-          sendOrderConfirmation(emailData),
-          sendAdminNotification(emailData),
-          order.internalNotes?.startsWith('Afsláttarkóði:')
-            ? incrementDiscountUsage(order.internalNotes.replace('Afsláttarkóði: ', ''))
-            : Promise.resolve(),
-        ]);
-      }
-    }
-
-    return NextResponse.json({ received: true });
+    await finalizePaidOrder(linkId);
+    return NextResponse.json({ received: true, confirmed: true });
   } catch (err) {
-    console.error('Webhook villa:', err);
-    return NextResponse.json({ error: 'Villa' }, { status: 400 });
+    console.error('Webhook villa:', err, rawBody.slice(0, 500));
+    // 500 svo Teya reyni aftur síðar (allt er idempotent, svo endurtekning er örugg)
+    return NextResponse.json({ error: 'Villa' }, { status: 500 });
   }
 }

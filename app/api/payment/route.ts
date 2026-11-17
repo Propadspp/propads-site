@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const { link, linkId } = await createPaymentLink(priced.items, priced.total, priced.shipping);
+    const { link, linkId } = await createPaymentLink(priced.items, priced.total, priced.shipping, orderId);
 
     // Attach Teya payment link ID to the order
     if (orderId && linkId) {

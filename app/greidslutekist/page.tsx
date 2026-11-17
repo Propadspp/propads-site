@@ -1,6 +1,13 @@
 import Link from 'next/link';
+import { confirmOrderById } from '@/lib/order-paid';
 
-export default function GreidslutekistPage() {
+export const dynamic = 'force-dynamic';
+
+export default async function GreidslutekistPage({ searchParams }: { searchParams: Promise<{ pantun?: string }> }) {
+  // Varaleið: staðfestum greiðsluna hjá Teya hér líka, ef webhook frá Teya hefur ekki borist.
+  const { pantun } = await searchParams;
+  const state = pantun ? await confirmOrderById(pantun) : 'unknown';
+
   return (
     <main style={{ minHeight: '100vh', background: '#080808', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
       <div style={{ textAlign: 'center', maxWidth: 480 }}>
@@ -8,7 +15,11 @@ export default function GreidslutekistPage() {
           <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="var(--brand)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>
         </div>
         <h1 className="font-display" style={{ fontSize: 'clamp(2rem,5vw,3rem)', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff', marginBottom: 16 }}>Greiðsla tókst!</h1>
-        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, marginBottom: 40 }}>Takk fyrir kaupið. Við sendum þér staðfestingu á netfangið þitt og pöntunin verður send fljótlega.</p>
+        <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1rem', lineHeight: 1.75, marginBottom: 40 }}>
+          {state === 'pending'
+            ? 'Takk fyrir kaupið. Greiðslan er í vinnslu hjá Teya — þú færð staðfestingu á netfangið þitt um leið og hún hefur verið staðfest.'
+            : 'Takk fyrir kaupið. Við sendum þér staðfestingu á netfangið þitt og pöntunin verður send fljótlega.'}
+        </p>
         <Link href="/" className="btn-primary" style={{ padding: '14px 32px', fontSize: '1rem' }}>Til baka á forsíðu</Link>
       </div>
     </main>

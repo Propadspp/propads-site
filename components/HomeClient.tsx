@@ -46,9 +46,10 @@ export default function HomeClient({ products, players, settings }: { products: 
   // Sokkamyndin er há með sokkana í miðjunni — færum sýnilega hlutann ofar svo sokkarnir sjáist allir
   const catPositions: Record<string, string> = {
     '/gripsokkar': !settings.gripsokkarImage && sockImage ? 'center 36%' : 'center',
+    // Tilboð-myndin er há — sýnum efri hlutann svo rauðu legghlífarnar sjáist
+    '/tilbod': 'center 8%',
   };
-  // Tilboð: „zoomað út“ — stærri hluti myndarinnar sést (rauðu + svörtu legghlífarnar), óskýr útgáfa fyllir hliðarnar
-  const catZoomOut: Record<string, boolean> = { '/tilbod': !!settings.tilbodImage };
+
 
   return (
     <>
@@ -84,12 +85,7 @@ export default function HomeClient({ products, players, settings }: { products: 
           ].map(cat => (
             <Link key={cat.href} href={cat.href} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', display: 'flex', flexDirection: 'column', transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.26s ease' }}>
               <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#161616' }}>
-                {catImages[cat.href] && catZoomOut[cat.href] ? (
-                  <>
-                    <Image src={catImages[cat.href]} alt="" aria-hidden fill sizes="(max-width: 640px) 100vw, 33vw" style={{ objectFit: 'cover', filter: 'blur(16px) brightness(0.85)', transform: 'scale(1.15)' }} />
-                    <Image src={catImages[cat.href]} alt={cat.label} fill sizes="(max-width: 640px) 100vw, 33vw" style={{ objectFit: 'contain', transform: 'scale(1.5)', transformOrigin: '50% 15%', maskImage: 'linear-gradient(to right, transparent 29%, #000 34%, #000 66%, transparent 71%)', WebkitMaskImage: 'linear-gradient(to right, transparent 29%, #000 34%, #000 66%, transparent 71%)' }} />
-                  </>
-                ) : catImages[cat.href]
+                {catImages[cat.href]
                   ? <Image src={catImages[cat.href]} alt={cat.label} fill sizes="(max-width: 640px) 100vw, 33vw" style={{ objectFit: 'cover', objectPosition: catPositions[cat.href] ?? 'center' }} />
                   : <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 30% 100%, rgba(255,77,171,0.16) 0%, transparent 70%), linear-gradient(135deg, #161616 0%, #0e0e0e 100%)' }} />}
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.75) 0%,transparent 50%)' }} />

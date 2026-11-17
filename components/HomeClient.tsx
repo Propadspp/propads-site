@@ -39,8 +39,13 @@ export default function HomeClient({ products, players, settings }: { products: 
     '/legghlifar': settings.legghlifarImage ? urlFor(settings.legghlifarImage).width(680).height(320).fit('crop').auto('format').url() : '',
     '/gripsokkar': settings.gripsokkarImage
       ? urlFor(settings.gripsokkarImage).width(680).height(320).fit('crop').auto('format').url()
-      : sockImage ? urlFor(sockImage).width(680).height(320).fit('crop').auto('format').url() : '',
+      : sockImage ? urlFor(sockImage).width(900).auto('format').url() : '',
     '/tilbod': settings.tilbodImage ? urlFor(settings.tilbodImage).width(680).height(320).fit('crop').auto('format').url() : '',
+  };
+
+  // Sokkamyndin er há með sokkana í miðjunni — færum sýnilega hlutann ofar svo sokkarnir sjáist allir
+  const catPositions: Record<string, string> = {
+    '/gripsokkar': !settings.gripsokkarImage && sockImage ? 'center 36%' : 'center',
   };
 
   return (
@@ -78,7 +83,7 @@ export default function HomeClient({ products, players, settings }: { products: 
             <Link key={cat.href} href={cat.href} style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', display: 'flex', flexDirection: 'column', transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.26s ease' }}>
               <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#161616' }}>
                 {catImages[cat.href]
-                  ? <Image src={catImages[cat.href]} alt={cat.label} fill style={{ objectFit: 'cover' }} />
+                  ? <Image src={catImages[cat.href]} alt={cat.label} fill sizes="(max-width: 640px) 100vw, 33vw" style={{ objectFit: 'cover', objectPosition: catPositions[cat.href] ?? 'center' }} />
                   : <div aria-hidden style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 30% 100%, rgba(255,77,171,0.16) 0%, transparent 70%), linear-gradient(135deg, #161616 0%, #0e0e0e 100%)' }} />}
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top,rgba(8,8,8,0.75) 0%,transparent 50%)' }} />
               </div>

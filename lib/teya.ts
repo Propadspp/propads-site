@@ -1,5 +1,7 @@
 const TOKEN_URL = 'https://id.teya.com/oauth/v2/oauth-token';
 const API_URL = 'https://api.teya.com';
+// Teya krefst User-Agent — annars getur eldveggur þeirra hafnað beiðninni
+const USER_AGENT = 'Propads-Web/1.0';
 
 export async function getTeyaAccessToken(): Promise<string> {
   const res = await fetch(TOKEN_URL, {
@@ -34,8 +36,9 @@ export type CartItem = {
 export async function getPaymentLink(id: string): Promise<Record<string, unknown> | null> {
   if (!/^[A-Za-z0-9_-]{1,100}$/.test(id)) return null;
   const accessToken = await getTeyaAccessToken();
-  const res = await fetch(`${API_URL}/v2/payment-links/${encodeURIComponent(id)}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  // GET er á /v1 (POST til að búa til er á /v2) — sjá docs.teya.com/apis/online-payments/openapi.yaml
+  const res = await fetch(`${API_URL}/v1/payment-links/${encodeURIComponent(id)}`, {
+    headers: { Authorization: `Bearer ${accessToken}`, 'User-Agent': USER_AGENT },
     cache: 'no-store',
   });
   if (!res.ok) {
@@ -50,8 +53,9 @@ export async function createPaymentLink(
   cart: CartItem[],
   total: number,
   shipping: number,
-  orderId?: string | null,
+  order?: { id: string; orderNumber: string } | null,
 ): Promise<{ link: string; linkId: string }> {
+  const orderId = order?.id;
   const accessToken = await getTeyaAccessToken();
 
   const baseUrl = (process.env.NEXT_PUBLIC_URL ?? 'https://propads.is').replace(/\/$/, '');
@@ -63,6 +67,7 @@ export async function createPaymentLink(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`,
       'Idempotency-Key': randomUUID(),
+      'User-Agent': USER_AGENT,
     },
     body: JSON.stringify({
       store_id: process.env.TEYA_STORE_ID,
@@ -86,6 +91,9 @@ export async function createPaymentLink(
       success_url: orderId ? `${baseUrl}/greidslutekist?pantun=${encodeURIComponent(orderId)}` : `${baseUrl}/greidslutekist`,
       cancel_url: `${baseUrl}/klara-kaup`,
       post_success_payment: 'REDIRECT',
+      // Teya sendir sjálft tölvupóst á þetta netfang við hverja greiðslu
+      merchant_success_email: process.env.ADMIN_EMAIL ?? 'propadspp@gmail.com',
+      ...(order?.orderNumber ? { merchant_reference: order.orderNumber } : {}),
       transaction_type: 'SALE',
       type: 'SINGLE_USE',
     }),

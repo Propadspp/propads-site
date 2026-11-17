@@ -11,8 +11,8 @@ export async function GET(req: NextRequest) {
   if (!info?.linkId) return NextResponse.json({ found: false });
   let token: string;
   try { token = await getTeyaAccessToken(); } catch { return NextResponse.json({ found: true, token: 'failed' }); }
-  const res = await fetch(`https://api.teya.com/v2/payment-links/${encodeURIComponent(info.linkId)}`, {
-    headers: { Authorization: `Bearer ${token}` }, cache: 'no-store',
+  const res = await fetch(`https://api.teya.com/v1/payment-links/${encodeURIComponent(info.linkId)}`, {
+    headers: { Authorization: `Bearer ${token}`, 'User-Agent': 'Propads-Web/1.0' }, cache: 'no-store',
   });
   const body = await res.json().catch(() => ({}));
   const pick = (o: Record<string, unknown>) => Object.fromEntries(

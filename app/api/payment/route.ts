@@ -39,6 +39,7 @@ export async function POST(req: NextRequest) {
 
     // Save pending order to Sanity if we have customer info
     let orderId: string | null = null;
+    let orderNumber: string | null = null;
     if (customer?.email && shippingAddress?.street) {
       try {
         const order = await createPendingOrder({
@@ -57,12 +58,16 @@ export async function POST(req: NextRequest) {
           discountCode: priced.discountCode,
         });
         orderId = order._id;
+        orderNumber = order.orderNumber;
       } catch (err) {
         console.error('Sanity order creation failed:', err);
       }
     }
 
-    const { link, linkId } = await createPaymentLink(priced.items, priced.total, priced.shipping, orderId);
+    const { link, linkId } = await createPaymentLink(
+      priced.items, priced.total, priced.shipping,
+      orderId && orderNumber ? { id: orderId, orderNumber } : null,
+    );
 
     // Attach Teya payment link ID to the order
     if (orderId && linkId) {

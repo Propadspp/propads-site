@@ -11,6 +11,8 @@ import { fmtPrice } from '@/lib/format';
 
 type SizeQty = Record<string, number>;
 
+const parLabel = (n: number) => (n === 1 ? '1 par' : `${n} pör`);
+
 export default function GripsokkarClient({ products, tiers }: { products: Product[]; tiers: GripsokkarBundleTier[] }) {
   const product = products[0];
   const price = product?.price ?? 0;
@@ -20,18 +22,27 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
   const { addItem } = useCart();
   const [activeImg, setActiveImg] = useState(0);
   const [singleSize, setSingleSize] = useState(sizes[0] ?? '38-42');
-  const [selectedTierIdx, setSelectedTierIdx] = useState(0);
+  // „1 par“ fremst, svo magntilboðin úr Sanity (3 og 5 pör). Sjálfgefið er fyrsta magntilboðið valið.
+  const allTiers: GripsokkarBundleTier[] = [
+    { _id: 'single', quantity: 1, discountPercent: 0 },
+    ...tiers,
+  ];
+  const [selectedTierIdx, setSelectedTierIdx] = useState(tiers.length > 0 ? 1 : 0);
   const [bundleQty, setBundleQty] = useState<SizeQty>(() =>
     Object.fromEntries(sizes.map((s, i) => [s, i === 0 ? 1 : 0]))
   );
 
-  const selectedTier = tiers[selectedTierIdx] ?? { quantity: 3, discountPercent: 12 };
+  const selectedTier = allTiers[selectedTierIdx] ?? allTiers[0];
   const bundlePrice = Math.round(price * selectedTier.quantity * (1 - selectedTier.discountPercent / 100));
   const bundleTotal = Object.values(bundleQty).reduce((a, b) => a + b, 0);
   const bundleValid = bundleTotal === selectedTier.quantity;
 
   function adjustQty(size: string, delta: number) {
     setBundleQty(prev => {
+      // Fyrir 1 par: ýta á + við aðra stærð skiptir yfir í hana
+      if (selectedTier.quantity === 1 && delta > 0) {
+        return Object.fromEntries(sizes.map(s => [s, s === size ? 1 : 0]));
+      }
       const next = { ...prev, [size]: Math.max(0, (prev[size] ?? 0) + delta) };
       const total = Object.values(next).reduce((a, b) => a + b, 0);
       if (total > selectedTier.quantity) return prev;
@@ -51,6 +62,11 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
 
   function addBundle() {
     if (!bundleValid || !product) return;
+    if (selectedTier.quantity === 1) {
+      const size = Object.entries(bundleQty).find(([, q]) => q > 0)?.[0] ?? sizes[0];
+      addItem({ id: product._id, name: product.name, price, category: 'Gripsokkar', size });
+      return;
+    }
     const sizeDesc = Object.entries(bundleQty)
       .filter(([, q]) => q > 0)
       .map(([s, q]) => `${q}× ${s}`)
@@ -75,7 +91,7 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
       {/* Single product */}
       <section style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px 32px' }}>
         <div style={{ background: '#101010', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 24, overflow: 'hidden' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 400 }}>
+          <div className="grip-single-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 400 }}>
             <div style={{ background: '#161616', position: 'relative', aspectRatio: '1/1' }}>
               {images[activeImg] ? (
                 <Image
@@ -99,7 +115,7 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
                 </div>
               )}
             </div>
-            <div style={{ padding: '48px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="grip-single-info" style={{ padding: '48px 40px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>Gripsokkar</p>
               <h2 className="font-display" style={{ fontSize: '2.2rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff', marginBottom: 10 }}>{product?.name ?? 'Gripsokkar'}</h2>
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9375rem', lineHeight: 1.75, marginBottom: 24 }}>Hannaðir með anti-slip tækni sem heldur fætinum á réttum stað inni í skónum.</p>
@@ -128,8 +144,8 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
         </div>
 
         {/* Bundle size selector */}
-        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${tiers.length}, 1fr)`, gap: 16, marginBottom: 28 }}>
-          {tiers.map((tier, idx) => {
+        <div className="grip-tier-grid" style={{ display: 'grid', gridTemplateColumns: `repeat(${allTiers.length}, 1fr)`, gap: 16, marginBottom: 28 }}>
+          {allTiers.map((tier, idx) => {
             const p = Math.round(price * tier.quantity * (1 - tier.discountPercent / 100));
             const full = price * tier.quantity;
             const active = selectedTierIdx === idx;
@@ -140,13 +156,17 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
                     <div style={{ width: 20, height: 20, borderRadius: '50%', border: `2px solid ${active ? 'var(--brand)' : 'rgba(255,255,255,0.2)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {active && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--brand)' }} />}
                     </div>
-                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff' }}>{tier.quantity} pör</span>
+                    <span style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap' }}>{parLabel(tier.quantity)}</span>
                   </div>
-                  <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>{tier.discountPercent}% AFSLÁTTUR</span>
+                  {tier.discountPercent > 0 && (
+                    <span style={{ background: 'rgba(184,240,58,0.15)', color: 'var(--brand)', fontSize: '0.75rem', fontWeight: 700, padding: '3px 10px', borderRadius: 6 }}>{tier.discountPercent}% AFSLÁTTUR</span>
+                  )}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
                   <span className="font-display" style={{ fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.03em', color: '#fff' }}>{fmtPrice(p)}</span>
-                  <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'line-through' }}>{fmtPrice(full)}</span>
+                  {p < full && (
+                    <span style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.35)', textDecoration: 'line-through' }}>{fmtPrice(full)}</span>
+                  )}
                 </div>
               </div>
             );
@@ -158,7 +178,7 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
             <p style={{ fontSize: '0.875rem', fontWeight: 600, color: '#fff' }}>Veldu stærðarskiptingu</p>
             <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: bundleValid ? 'var(--brand)' : 'rgba(255,255,255,0.35)' }}>
-              {bundleTotal} / {selectedTier.quantity} pör
+              {bundleTotal} / {parLabel(selectedTier.quantity)}
             </span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -188,8 +208,8 @@ export default function GripsokkarClient({ products, tiers }: { products: Produc
           disabled={!bundleValid}
           style={{ width: '100%', padding: 16, background: bundleValid ? 'var(--brand)' : 'rgba(255,255,255,0.08)', color: bundleValid ? '#080808' : 'rgba(255,255,255,0.3)', fontSize: '1rem', fontWeight: 700, border: 'none', borderRadius: 12, cursor: bundleValid ? 'pointer' : 'default', transition: 'background 0.15s, color 0.15s' }}>
           {bundleValid
-            ? `Bæta í körfu — ${selectedTier.quantity} pör · ${fmtPrice(bundlePrice)}`
-            : `Veldu ${selectedTier.quantity - bundleTotal} pör í viðbót`}
+            ? `Bæta í körfu — ${parLabel(selectedTier.quantity)} · ${fmtPrice(bundlePrice)}`
+            : `Veldu ${parLabel(selectedTier.quantity - bundleTotal)} í viðbót`}
         </button>
       </section>
     </PageLayout>

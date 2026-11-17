@@ -106,6 +106,9 @@ body::after {
   .checkout-main { padding-top: 88px !important; }
   .form-grid-2 { grid-template-columns: 1fr !important; }
   .form-grid-postal { grid-template-columns: 1fr 1fr !important; }
+  .grip-single-grid { grid-template-columns: 1fr !important; min-height: 0 !important; }
+  .grip-single-info { padding: 28px 24px !important; }
+  .grip-tier-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
 }
 
 @media(max-width:640px) {

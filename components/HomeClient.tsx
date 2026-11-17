@@ -34,9 +34,12 @@ export default function HomeClient({ products, players, settings }: { products: 
     }
   }
 
+  const sockImage = products.find(p => p.category === 'gripsokkar' && p.images?.length)?.images?.[0];
   const catImages: Record<string, string> = {
     '/legghlifar': settings.legghlifarImage ? urlFor(settings.legghlifarImage).width(680).height(320).fit('crop').auto('format').url() : '',
-    '/gripsokkar': settings.gripsokkarImage ? urlFor(settings.gripsokkarImage).width(680).height(320).fit('crop').auto('format').url() : '',
+    '/gripsokkar': settings.gripsokkarImage
+      ? urlFor(settings.gripsokkarImage).width(680).height(320).fit('crop').auto('format').url()
+      : sockImage ? urlFor(sockImage).width(680).height(320).fit('crop').auto('format').url() : '',
     '/tilbod': settings.tilbodImage ? urlFor(settings.tilbodImage).width(680).height(320).fit('crop').auto('format').url() : '',
   };
 
